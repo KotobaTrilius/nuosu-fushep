@@ -298,7 +298,7 @@ const translations = {
         editor_placeholder: "Youq gizneix coqhaeuj roxnaeuz mbaenq gij anniuj baihlaj daeuj caphaeuj cihsaw...",
         copy_btn: "📋 Fukceiq cihsaw",
         copied: "✅ Fukceiq liux",
-        info_default: "Dingz youq gwnz cihsaw daeuj yawj saenqsik",
+        info_default: "Cuengq aen ceijcim sujbyauh youq gwnz cihsaw daeuj yawj gij gangjmingz",
         tab_radical: "Aeu busouj",
         tab_stroke: "Aeu bitveh (Sawqniemh)",
         trans_label: "Bingqyaem Latin:",
@@ -307,12 +307,12 @@ const translations = {
         radical_list_title: "Aenbiuj cihsaw",
         radical_no_selection: "Caengz genj",
         radical_empty: "Aen busouj neix mbouj miz cihsaw",
-        radical_stroke_0: "Lingz aen bitveh",
-        radical_stroke_1: "Aen bitveh ndeu",
-        radical_stroke_2: "Song aen bitveh",
-        radical_stroke_3: "Sam aen bitveh",
-        radical_stroke_4: "Seiq aen bitveh",
-        radical_stroke_5: "Haj aen bitveh caeuj doxhwnj",
+        radical_stroke_0: "Lingz bit",
+        radical_stroke_1: "Bit ndeu",
+        radical_stroke_2: "Song bit",
+        radical_stroke_3: "Sam bit",
+        radical_stroke_4: "Seiq bit",
+        radical_stroke_5: "Haj bit caeuj doxhwnj",
         
         stroke_input_title: "Coqhaeuj bitveh",
         stroke_clear_btn: "Cawzseuq bitveh (Esc)",
@@ -343,7 +343,7 @@ const translations = {
         copy_error_alert: "Fukceiq okloek."
     }
 };
-let currentLang = 'zh'; 
+let currentLang = 'zh-CN'; 
 
 function t(key) {
     if (translations[currentLang] && translations[currentLang][key]) {
