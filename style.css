@@ -68,7 +68,7 @@ body {
 }
 
 :lang(ii) {
-    font-family: "NiepSha Sans", "Noto Sans Yi", "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", sans-serif !important;
+    font-family: "NiepSha Sans", "Noto Sans Yi", "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 .container {
@@ -392,7 +392,7 @@ button:hover {
 }
 
 .yi-logo {
-    font-family: "NiepSha Cursive";
+    font-family: "NiepSha Cursive" !important;
     font-size: 200%;
     font-weight: 900;
 }
