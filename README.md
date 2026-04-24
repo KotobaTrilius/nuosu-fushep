@@ -1,5 +1,5 @@
-# Nuosu SHEPFU
-ꎹꃚ / SHEPFU (pronounced /ʂɤ̂.fv̩̄/), a Nuosu Yi Syllabary Character Finder &amp; Editor
+# Nuosu FUSHEP
+ꃚꎹ / FUSHEP (pronounced /fū.ʂɤ̂/), a Nuosu Yi Syllabary Character Finder &amp; Editor
 
 # Deployment
 https://kotobatrilius.github.io/nuosu-shepfu/
