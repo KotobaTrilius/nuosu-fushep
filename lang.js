@@ -207,7 +207,7 @@ const translations = {
         copied: "✅ 복사됨",
         info_default: "문자 위에 마우스를 올려 상세 정보 보기",
         tab_radical: "부수 검색",
-        tab_stroke: "획 수 검색 (Beta)",
+        tab_stroke: "필획 검색 (Beta)",
         trans_label: "로마자 표기:",
         
         radical_select_title: "부수 선택",
@@ -319,7 +319,7 @@ const translations = {
         radical_stroke_2: "Song bit",
         radical_stroke_3: "Sam bit",
         radical_stroke_4: "Seiq bit",
-        radical_stroke_5: "Haj bit caeuj doxhwnj",
+        radical_stroke_5: "Haj bit caeuq doxhwnj",
         
         stroke_input_title: "Coqhaeuj bitveh",
         stroke_clear_btn: "Cawzseuq bitveh (Esc)",

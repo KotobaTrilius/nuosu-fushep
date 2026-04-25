@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
         myField.dispatchEvent(event);
     }
 
-    function toIPA(latinSyllable) {
-        let remaining = latinSyllable;
+    function toIPA(pinyin) {
+        let remaining = pinyin;
         let initialIPA = "";
         let finalIPA = "";
         let toneMark = tones[""];
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (finals[remaining]) {
             finalIPA = finals[remaining];
         } else {
-            console.warn(`Unknown final: "${remaining}" in syllable "${latinSyllable}"`);
+            console.warn(`Unknown final: "${remaining}" in syllable "${pinyin}"`);
             return null;
         }
 
@@ -88,10 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const strokes = charStrokes[char] || "";
         const ipa = toIPA(pinyin) || "?";
         
-        const formattedStrokes = strokes ? strokes.split('').join('-') : t('info_none');
+        // const formattedStrokes = strokes ? strokes.split('').join('-') : t('info_none');
 
         const ipaPart = (pinyin == "w" ? `${t('iteration_mark')}` : `<strong>${t('info_ipa')}:</strong> <span class="ipa">/${ipa}/</span>`)
-        
+        // FOR THE EXCEPTIONAL SYLLABLE ITERATION MARK "ꀕ" (TRANSLITERATED AS "w").
+
         infoDisplay.innerHTML = `
             <strong>${t('info_char')}:</strong> <strong>${char}</strong> | 
             <strong>${t('info_pinyin')}:</strong> ${pinyin} |
@@ -230,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function renderRadicalChars(radicalChar, radicalData) {
+    function renderRadicalChars(radicalData) {
         radicalCharContainer.innerHTML = '';
         
         const groups = radicalData.syllables || [];
@@ -257,9 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            
             if (charsInGroup.length === 0) return;
-
             
             const rowDiv = document.createElement('div');
             rowDiv.className = 'radical-stroke-row';
@@ -280,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (btn) charsDiv.appendChild(btn);
             });
             rowDiv.appendChild(charsDiv);
-
             
             radicalCharContainer.appendChild(rowDiv);
         });
