@@ -1,7 +1,7 @@
 # Nuosu FUSHEP
 ꃚꎹ / FUSHEP (pronounced /fū.ʂɤ̂/), a Nuosu Yi Syllabary Character Finder &amp; Editor
 
-Version: 0.1.1
+Version: 0.1.2
 
 # Deployment
 https://kotobatrilius.github.io/nuosu-fushep/
