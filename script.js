@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const radicalChar in radicalMap) {
             const radicalData = radicalMap[radicalChar];
             
-            let btnText = `[${radicalData.name}]\u00A0\u00A0\u00A0`;z
+            let btnText = `[${radicalData.name}]\u00A0\u00A0\u00A0`;
             btnText += radicalChar
             if (radicalData.vars && radicalData.vars.length > 0) {
                 btnText += ` ( ${radicalData.vars.join(' ')} )`;
