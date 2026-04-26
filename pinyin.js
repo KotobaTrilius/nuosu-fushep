@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function cutQuery(query) {
+        const delimiters = "' ";
+
         const pinyins = [];
         const l = query.length;
 
@@ -37,7 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (ptr.pinyin) {
                     pinyins.push(ptr.pinyin);
                     trailerStart = i;
-                    ptr = pinyinTrie[ch];
+                    if (pinyinTrie[ch]) {
+                        ptr = pinyinTrie[ch];
+                    } else if (delimiters.includes(ch)) {
+                        ptr = pinyinTrie;
+                        trailerStart += 1;
+                    } else {
+                        break;
+                    }
+                } else if (delimiters.includes(ch)) {
+                    trailerStart += 1;
                 } else {
                     break;
                 }
