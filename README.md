@@ -3,6 +3,15 @@
 
 Version: 0.1.7
 
+# Introduction
+The **Yi Syllabary**, also known as the **Liangshan Standard Yi Script**, serves as the official orthography for the **Nuosu language** (classified as Northern Yi in China). Endorsed by the Chinese State Council, it is the sole standardized Yi script with national recognition.
+
+The system evolved from the traditional logographic Yi script by curating and simplifying its character set into a syllabary, wherein each grapheme corresponds to a distinct syllable. The standardized repertoire comprises 756 native syllables, 63 Chinese loanword syllables, 345 tonal variants indicated by diacritics (separatedly encoded in Unicode), plus one syllable iteration mark. With the tonal variants and the iteration mark excluded, the count of syllables are in total 819, thus the system is frequently called "819 Yi Script" vernacularly.
+
+Geographically, the script is officially used in the **Liangshan Yi Autonomous Prefecture, Sichuan**, and with limited application in the **Honghe Hani and Yi Autonomous Prefecture, Yunnan**, despite of the latter’s dominance of Southeastern (Nisoish) and Southern (Nisu) Yi dialects. Conversely, other Yi-speaking regions employ distinct logographic systems that remain unencoded in the Unicode Standard.
+
+While Hani and Lisu are linguistically classified as Loloish (Yi-branch) languages, their speakers are ethnically and legally distinct from the Yi people. Yi scripts — whether syllabic or logographic — are not used for these languages.
+
 # Deployment
 https://kotobatrilius.github.io/nuosu-fushep/
 
