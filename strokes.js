@@ -204,21 +204,42 @@ function resolveCharsFromStrokes(strokes) {
     if (sets.length === 0 || sets.includes(undefined)) return [];
 
     const setsSorted = sets.sort((set1, set2) => set1.size - set2.size);
-    const ret = new Set(setsSorted[0]);
+    const candidates = new Set(setsSorted[0]);
 
-    for (let set of sets.slice(1)) {
-        ret.forEach(candidate => {
+    for (const set of sets.slice(1)) {
+        candidates.forEach(candidate => {
             if (!set.has(candidate)) {
-                ret.delete(candidate);
+                candidates.delete(candidate);
             }
         });
     }
 
-    return ret.values().map(char => [char, 
-        charStrokesExpanded[char].some(cObj => 
-            Object.entries(cObj).every(([k, v]) => countObj[k] === v))]);
-            // reverse condition is not needed
-            // as such would be filtered right before
+    const ret = [];
+
+    for (const candidate of candidates) {
+        const expansions = charStrokesExpanded[candidate];
+        let match = false;
+        let exact = false;
+        for (const expansion of expansions) {
+            if (Object.keys(expansion).length < Object.keys(countObj).length) 
+                continue;
+
+            let expansionMatch = Object.keys(countObj)
+                .every(key => key in expansion);
+            let expansionExact = expansionMatch && Object.entries(expansion)
+                .every(([key, value]) => key in countObj &&
+                    countObj[key] === value);
+
+            if (expansionMatch) match = true;
+            if (expansionExact) {
+                exact = true;
+                break;
+            }
+        }
+        if (match) ret.push([candidate, exact]);
+    }
+
+    return ret;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
