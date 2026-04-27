@@ -52,15 +52,36 @@ const strokeExpansionRules = {
     'B3': ['B', ['H', 'H', 'V1', 'V2']],
 };
 
+/**
+ * 
+ * @param {string[]} arr
+ * @returns {Object.<string, number>} 
+ */
+function arrToCountObj(arr) {
+    const result = {};
+    for (const s of arr) {
+        result[s] = (result[s] || 0) + 1;
+    }
+    return result;
+}
+
+/**
+ * @type {Object.<string, Object<string, number>[]>}
+ */
 const strokeExpansionRulesCleaned = Object.fromEntries(
     Object.entries(strokeExpansionRules)
         .map(([k, v]) => [k, v.filter(arr => arr != k)])
         .filter(([k, v]) => v.length > 0)
         // remove identity mappings
-        .map(([k, v]) => [k, 
-            v.map(x => typeof x === 'string'
-                ? [x] : x )]) // turn string into string[]
+        .map(([k, v]) => [k, v
+            .map(x => typeof x === 'string' ? [x] : x)
+            // turn string into string[]
+            .map(arr => arrToCountObj(arr))
+            // turn string[] into <string, number>
+        ]) 
 );
+
+console.log(strokeExpansionRulesCleaned);
 
 const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
     .map(arr => arr.flat()).flat()
@@ -72,16 +93,71 @@ const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
 
 /**
  * 
- * @param {string[]} strokes 
- * @returns {string[][]}
+ * @param {Object.<string, number>} strokes 
+ * @returns {Object.<string, number>[]}
  */
-function expandStrokes(strokes) {
-    // TO-DO: implement
+function expandStrokes(strokes, memo) {
+    const key = JSON.stringify(Object.entries(strokes).sort());
+    if (memo.has(key)) return memo.get(key);
+    
+    const sym = Object.keys(strokes).find(s => s in strokeExpansionRulesCleaned);
+    if (!sym) {
+        return [strokes];
+    }
+    
+    const total = strokes[sym];
+    const variants = strokeExpansionRulesCleaned[sym];
+    const results = [];
+    
+    function allocate(remain, idx, distribution) {
+        if (idx === variants.length - 1) {
+            distribution.push(remain);
+            
+            const next = { ...strokes };
+            delete next[sym];
+            
+            for (let i = 0; i < variants.length; i++) {
+                const times = distribution[i];
+                if (times === 0) continue;
+                const varCnt = variants[i];
+                for (const [s, c] of Object.entries(varCnt)) {
+                    next[s] = (next[s] || 0) + c * times;
+                }
+            }
+            
+            for (const sub of dfs(next)) {
+                results.push(sub);
+            }
+            
+            distribution.pop();
+            return;
+        }
+        
+        for (let i = 0; i <= remain; i++) {
+            distribution.push(i);
+            allocate(remain - i, idx + 1, distribution);
+            distribution.pop();
+        }
+    }
+    
+    allocate(total, 0, []);
+    
+    const unique = new Map();
+    for (const r of results) {
+        const k = JSON.stringify(Object.entries(r).sort());
+        if (!unique.has(k)) unique.set(k, r);
+    }
+    const out = Array.from(unique.values());
+    
+    memo.set(key, out);
+    return out;
 }
 
 const charStrokes = {
     "": [],
 };
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof charInfo === 'undefined') {
