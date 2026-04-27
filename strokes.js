@@ -155,6 +155,7 @@ function expandStrokes(strokes, memo) {
 const charStrokes = {
     // for test
     'ddip': ['N1', 'I', 'H', 'H'],
+    'yy': ['I', 'C1'],
 };
 
 if (Object.values(charStrokes).flat().some(x => !(x in strokeExpansionRules))) {
@@ -185,6 +186,34 @@ Object.entries(charStrokesExpanded).forEach(([char, countObjs]) => {
         });
     });
 });
+
+/**
+ * 
+ * @param {string[]} strokes
+ * @returns {Set<string>}
+ */
+function resolveCharsFromStrokes(strokes) {
+    const countObj = arrToCountObj(strokes);
+
+    const sets = Object.entries(countObj)
+        .map(([stroke, count]) =>
+            charStrokesLookupReverse[stroke] &&
+            charStrokesLookupReverse[stroke][count]);
+    if (sets.length === 0 || sets.includes(undefined)) return [];
+
+    const setsSorted = sets.sort((set1, set2) => set1.size - set2.size);
+    const ret = new Set(setsSorted[0]);
+
+    for (let set of sets.slice(1)) {
+        ret.forEach(candidate => {
+            if (!set.has(candidate)) {
+                ret.delete(candidate);
+            }
+        });
+    }
+
+    return ret;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof charInfo === 'undefined') {
