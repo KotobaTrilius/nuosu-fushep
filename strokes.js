@@ -307,6 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (inputtableStrokes.has(key)) {
             e.preventDefault();
             addStroke(key);
+        } else if (e.key === 'Backspace') {
+            e.preventDefault();
+            // TO-DO: delete strokes
         } else if (e.key === 'Escape') {
             clearStrokes();
         }
