@@ -81,8 +81,6 @@ const strokeExpansionRulesCleaned = Object.fromEntries(
         ]) 
 );
 
-console.log(strokeExpansionRulesCleaned);
-
 const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
     .map(arr => arr.flat()).flat()
     .filter(elem => !strokeExpansionRules[elem] ||
@@ -93,7 +91,8 @@ const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
 
 /**
  * 
- * @param {Object.<string, number>} strokes 
+ * @param {Object.<string, number>} strokes
+ * @param {Map} memo
  * @returns {Object.<string, number>[]}
  */
 function expandStrokes(strokes, memo) {
@@ -125,7 +124,7 @@ function expandStrokes(strokes, memo) {
                 }
             }
             
-            for (const sub of dfs(next)) {
+            for (const sub of expandStrokes(next, memo)) {
                 results.push(sub);
             }
             
@@ -154,10 +153,19 @@ function expandStrokes(strokes, memo) {
 }
 
 const charStrokes = {
-    "": [],
+    // for test
+    'ddip': ['N1', 'I', 'H', 'H'],
 };
 
+if (Object.values(charStrokes).flat().some(x => !(x in strokeExpansionRules))) {
+    console.error.log("Non-symbol used in charStrokes definition!");
+}
 
+const charStrokesExpanded = (function() {
+    const memo = new Map();
+    return Object.fromEntries(Object.entries(charStrokes)
+        .map(([k, v]) => [k, expandStrokes(arrToCountObj(v), memo)]));
+})();
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof charInfo === 'undefined') {
