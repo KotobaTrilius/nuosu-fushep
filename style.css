@@ -115,6 +115,19 @@ body {
     font-weight: normal;
 }
 
+html[lang="ii"] .subtitle, 
+html[lang="ii"] .tab-btn,
+html[lang="ii"] .trans-label,
+html[lang="ii"] .info-box,
+html[lang="ii"] .star-me-caption {
+    font-size: 1.05em;
+    line-height: 0.8;
+}
+
+html[lang="ii"] .stroke-label {
+    font-size: 2em;
+} /* DOESN'T WORK 🤔 */
+
 .header-controls {
     display: flex;
     flex-direction: column;
