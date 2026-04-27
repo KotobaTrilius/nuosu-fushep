@@ -190,7 +190,7 @@ Object.entries(charStrokesExpanded).forEach(([char, countObjs]) => {
 /**
  * 
  * @param {string[]} strokes
- * @returns {Set<string>}
+ * @returns {[string, bool][]}
  */
 function resolveCharsFromStrokes(strokes) {
     const countObj = arrToCountObj(strokes);
@@ -212,7 +212,11 @@ function resolveCharsFromStrokes(strokes) {
         });
     }
 
-    return ret;
+    return ret.values().map(char => [char, 
+        charStrokesExpanded[char].some(cObj => 
+            Object.entries(cObj).every(([k, v]) => countObj[k] === v))]);
+            // reverse condition is not needed
+            // as such would be filtered right before
 }
 
 document.addEventListener('DOMContentLoaded', () => {
