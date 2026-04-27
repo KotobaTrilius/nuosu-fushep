@@ -179,10 +179,12 @@ Object.entries(charStrokesExpanded).forEach(([char, countObjs]) => {
             if (!charStrokesLookupReverse[stroke]) {
                 charStrokesLookupReverse[stroke] = {}
             }
-            if (!charStrokesLookupReverse[stroke][count]) {
-                charStrokesLookupReverse[stroke][count] = new Set();
+            for (let i = 1; i <= count; ++i) {
+                if (!charStrokesLookupReverse[stroke][i]) {
+                    charStrokesLookupReverse[stroke][i] = new Set();
+                }
+                charStrokesLookupReverse[stroke][i].add(char);
             }
-            charStrokesLookupReverse[stroke][count].add(char);
         });
     });
 });
@@ -273,26 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function isMatch(input, target) {
-        const inputCounts = {};
-        for (let char of input) {
-            inputCounts[char] = (inputCounts[char] || 0) + 1;
-        }
-
-        const targetCounts = {};
-        for (let char of target) {
-            targetCounts[char] = (targetCounts[char] || 0) + 1;
-        }
-
-        for (let char in inputCounts) {
-            if (!targetCounts[char] || targetCounts[char] < inputCounts[char]) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     function filterCharsByStrokes() {
         strokeCharContainer.innerHTML = '';
 
@@ -303,24 +285,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const inputStrokes = currentStrokes;
-        const matchedChars = [];
-
-        for (const char in charInfo) {
-            const strokes = charStrokes[char];
-            if (!strokes) continue;
-
-            if (isMatch(inputStrokes, strokes)) {
-                matchedChars.push(char);
-            }
-        }
+        const matchedChars = resolveCharsFromStrokes(currentStrokes);
 
         matchCountLabel.textContent = matchedChars.length;
 
         if (matchedChars.length === 0) {
             strokeCharContainer.innerHTML = `<p class="hint">${t('stroke_no_match')}</p>`;
         } else {
-            matchedChars.forEach(char => {
-                const btn = createCharButton(char);
+            matchedChars.forEach(([char, exact]) => {
+                const btn = createCharButton(charLookupReverse[char], exact);
                 if (btn) strokeCharContainer.appendChild(btn);
             });
         }
