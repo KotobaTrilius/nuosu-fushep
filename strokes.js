@@ -65,8 +65,7 @@ const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
     .map(arr => arr.flat()).flat()
     .filter(elem => !strokeExpansionRules[elem] ||
         // VALUES THAT DO NOT APPEAR AS KEYS, OR
-        strokeExpansionRules[elem].length == 1 &&
-        strokeExpansionRules[elem][0] === elem
+        strokeExpansionRules[elem].includes(elem)
         // VALUES IN IDENTITY MAPPINGS
 ));
 
