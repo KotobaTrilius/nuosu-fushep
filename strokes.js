@@ -167,6 +167,25 @@ const charStrokesExpanded = (function() {
         .map(([k, v]) => [k, expandStrokes(arrToCountObj(v), memo)]));
 })();
 
+/**
+ * @type {Object.<string, Object<number, Set<string>>>}
+ */
+const charStrokesLookupReverse = {};
+
+Object.entries(charStrokesExpanded).forEach(([char, countObjs]) => {
+    countObjs.forEach(countObj => {
+        Object.entries(countObj).forEach(([stroke, count]) => {
+            if (!charStrokesLookupReverse[stroke]) {
+                charStrokesLookupReverse[stroke] = {}
+            }
+            if (!charStrokesLookupReverse[stroke][count]) {
+                charStrokesLookupReverse[stroke][count] = new Set();
+            }
+            charStrokesLookupReverse[stroke][count].add(char);
+        });
+    });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof charInfo === 'undefined') {
         alert(t('load_error'));
