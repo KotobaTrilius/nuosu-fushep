@@ -1,12 +1,80 @@
-const splittableStrokes = {
-    "N": ["|", "\\", "|"],
+/**
+ * @type {Object.<string, (string | string[])[]>}
+ */
+const strokeExpansionRules = {
+    // SYMBOL : CAN BE RETRIEVED BY ...
+    // string as value -> choice of resolution
+    // string[] as value -> expansion
+    'H' : ['H'],
+    'I' : ['I'],
+    'V1': ['V'],
+    'V2': ['V'],
+    'R1': ['R'],
+    'R2': ['R', 'H'],
+    'R3': ['R', 'I'],
+    'R4': ['R', 'V1'],
+    'R5': ['R', 'V2'],
+    'O' : ['O'],
+    'Q' : ['Q'],
+    'P' : ['P'],
+
+    'D1': ['D'],
+    'D2': ['D', ['H', 'H', 'I']],
+    'C1': ['C'],
+    'C2': ['C', ['H', 'H', 'I']],
+    'A' : ['A'],
+    'U1': ['U'],
+    'U2': ['U'],
+    'U3': ['U'],
+    'S' : ['S'],
+
+    'J1': ['J', ['I', 'V2']],
+    'J2': ['J'],
+    'L1': ['L', ['I', 'V1']],
+    'L2': ['L'],
+    'F' : ['F', ['I', 'V2']],
+    'Z' : ['Z', ['I', 'V2', 'V2']],
+    'N1': ['N', ['I', 'I', 'V2']],
+    'N2': ['N', ['I', 'V2', 'V2']],
+    'M1': ['M', ['I', 'I', 'V2', 'V2']],
+    'M2': ['M', ['I', 'I', 'V2', 'V2']],
+
+    'G1': ['G', ['I', 'C']],
+    'G2': ['G', ['I', 'D']],
+    'G3': ['G', ['I', 'I', 'I', 'V1', 'V2']],
+
+    'X' : ['X', ['V1', 'V2']],
+    'T' : ['T', ['H', 'I']],
+    'K1': ['K', ['I', 'V1', 'V2']],
+    'K2': ['K', ['H', 'V1', 'V2']],
+    'B1': ['B', ['I', 'I', 'V1', 'V2']],
+    'B2': ['B', ['H', 'H', 'V1', 'V2']],
+    'B3': ['B', ['H', 'H', 'V1', 'V2']],
 };
 
-const ambiguousStrokes = {
-    ".|": [".", "|"],
-    ".-": [".", "-"],
-};
+const strokeExpansionRulesCleaned = Object.fromEntries(
+    Object.entries(strokeExpansionRules)
+        .filter(([k, v]) => v.length != 1 || k != v[0])
+        // remove identity mappings
+        .map(([k, v]) => [k, 
+            v.map(x => typeof x === 'string'
+                ? [x] : x )]) // turn string into string[]
+);
 
+const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
+    .map(arr => arr.flat()).flat()
+    .filter(elem => !strokeExpansionRules[elem] ||
+        // VALUES THAT DO NOT APPEAR AS KEYS, OR
+        strokeExpansionRules[elem].length == 1 &&
+        strokeExpansionRules[elem][0] === elem
+        // VALUES IN IDENTITY MAPPINGS
+));
+
+/**
+ * 
+ * @param {string[]} strokes 
+ * @returns {string[][]}
+ */
 function expandStrokes(strokes) {
     // TO-DO: implement
 }
@@ -14,8 +82,6 @@ function expandStrokes(strokes) {
 const charStrokes = {
     "": [],
 };
-
-const ALL_STROKES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof charInfo === 'undefined') {
@@ -32,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearStrokeBtn = document.getElementById('clear-stroke-btn');
 
     function initStrokeKeyboard() {
-        ALL_STROKES.forEach(stroke => {
+        inputtableStrokes.forEach(stroke => {
             const btn = document.createElement('button');
             btn.textContent = stroke;
             btn.className = 'stroke-key-btn';
@@ -129,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.ctrlKey || e.altKey || e.metaKey) return;
 
         const key = e.key.toUpperCase();
-        if (ALL_STROKES.includes(key)) {
+        if (inputtableStrokes.has(key)) {
             e.preventDefault();
             addStroke(key);
         } else if (e.key === 'Escape') {
