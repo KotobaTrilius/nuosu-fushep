@@ -54,7 +54,8 @@ const strokeExpansionRules = {
 
 const strokeExpansionRulesCleaned = Object.fromEntries(
     Object.entries(strokeExpansionRules)
-        .filter(([k, v]) => v.length != 1 || k != v[0])
+        .map(([k, v]) => [k, v.filter(arr => arr != k)])
+        .filter(([k, v]) => v.length > 0)
         // remove identity mappings
         .map(([k, v]) => [k, 
             v.map(x => typeof x === 'string'
