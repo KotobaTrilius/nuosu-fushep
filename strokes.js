@@ -81,8 +81,7 @@ function arrToCountObj(arr) {
  */
 const strokeExpansionRulesCleaned = Object.fromEntries(
     Object.entries(strokeExpansionRules)
-        .map(([k, v]) => [k, v.filter(arr => arr != k)])
-        .filter(([k, v]) => v.length > 0)
+        .filter(([k, v]) => v.length > 1 && k[0] != v[0])
         // remove identity mappings
         .map(([k, v]) => [k, v
             .map(x => typeof x === 'string' ? [x] : x)
@@ -100,12 +99,6 @@ const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
         // VALUES IN IDENTITY MAPPINGS
 ));
 
-/**
- * 
- * @param {Object.<string, number>} strokes
- * @param {Map} memo
- * @returns {Object.<string, number>[]}
- */
 function expandStrokes(strokes, memo) {
     const key = JSON.stringify(Object.entries(strokes).sort());
     if (memo.has(key)) return memo.get(key);
@@ -119,18 +112,34 @@ function expandStrokes(strokes, memo) {
     const variants = strokeExpansionRulesCleaned[sym];
     const results = [];
     
+    let hasIdentity = false;
+    const realVariants = [];
+    for (const v of variants) {
+        if (Object.keys(v).length === 1 && v[sym] === 1) {
+            hasIdentity = true;
+        } else {
+            realVariants.push(v);
+        }
+    }
+    
+    if (realVariants.length === 0) {
+        const out = [strokes];
+        memo.set(key, out);
+        return out;
+    }
+    
     function allocate(remain, idx, distribution) {
-        if (idx === variants.length - 1) {
+        if (idx === realVariants.length - 1) {
             distribution.push(remain);
             
             const next = { ...strokes };
             delete next[sym];
             
-            for (let i = 0; i < variants.length; i++) {
+            for (let i = 0; i < realVariants.length; i++) {
                 const times = distribution[i];
                 if (times === 0) continue;
-                const varCnt = variants[i];
-                for (const [s, c] of Object.entries(varCnt)) {
+                const v = realVariants[i];
+                for (const [s, c] of Object.entries(v)) {
                     next[s] = (next[s] || 0) + c * times;
                 }
             }
@@ -151,6 +160,10 @@ function expandStrokes(strokes, memo) {
     }
     
     allocate(total, 0, []);
+    
+    if (hasIdentity) {
+        results.push(strokes);
+    }
     
     const unique = new Map();
     for (const r of results) {
