@@ -101,8 +101,16 @@ function expandStrokes(strokes, memo) {
     const key = JSON.stringify(Object.entries(strokes).sort());
     if (memo.has(key)) return memo.get(key);
     
-    const sym = Object.keys(strokes).find(s => s in strokeExpansionRulesCleaned);
+    // 找到第一个有非恒等规则的符号
+    const sym = Object.keys(strokes).find(s => {
+        const variants = strokeExpansionRulesCleaned[s];
+        if (!variants) return false;
+        // 存在至少一个非恒等变体
+        return variants.some(v => !(Object.keys(v).length === 1 && v[s] === 1));
+    });
+    
     if (!sym) {
+        // 没有可展开的符号，当前状态已是最终叶子
         return [strokes];
     }
     
@@ -110,6 +118,7 @@ function expandStrokes(strokes, memo) {
     const variants = strokeExpansionRulesCleaned[sym];
     const results = [];
     
+    // 分离恒等变体
     let hasIdentity = false;
     const realVariants = [];
     for (const v of variants) {
@@ -120,11 +129,7 @@ function expandStrokes(strokes, memo) {
         }
     }
     
-    if (realVariants.length === 0) {
-        const out = [strokes];
-        memo.set(key, out);
-        return out;
-    }
+    // realVariants 一定非空（因为 sym 是通过有非恒等规则的条件找到的）
     
     function allocate(remain, idx, distribution) {
         if (idx === realVariants.length - 1) {
