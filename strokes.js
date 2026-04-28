@@ -81,8 +81,6 @@ function arrToCountObj(arr) {
  */
 const strokeExpansionRulesCleaned = Object.fromEntries(
     Object.entries(strokeExpansionRules)
-        .filter(([k, v]) => v.length > 1 || k[0] != v[0])
-        // remove identity mappings
         .map(([k, v]) => [k, v
             .map(x => typeof x === 'string' ? [x] : x)
             // turn string into string[]
