@@ -98,85 +98,87 @@ const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
 ));
 
 function expandStrokes(strokes, memo) {
-    const key = JSON.stringify(Object.entries(strokes).sort());
-    if (memo.has(key)) return memo.get(key);
-    
-    // 找到第一个有非恒等规则的符号
-    const sym = Object.keys(strokes).find(s => {
-        const variants = strokeExpansionRulesCleaned[s];
-        if (!variants) return false;
-        // 存在至少一个非恒等变体
-        return variants.some(v => !(Object.keys(v).length === 1 && v[s] === 1));
-    });
-    
-    if (!sym) {
-        // 没有可展开的符号，当前状态已是最终叶子
-        return [strokes];
+    const cacheKey = JSON.stringify(Object.entries(strokes).sort());
+    if (memo.has(cacheKey)) return memo.get(cacheKey);
+
+    let targetSym = null;
+    for (const s of Object.keys(strokes)) {
+        const rules = strokeExpansionRulesCleaned[s];
+        if (!rules) continue;
+        const hasNonIdentity = rules.some(v => !(Object.keys(v).length === 1 && v[s] === 1));
+        if (hasNonIdentity) {
+            targetSym = s;
+            break;
+        }
     }
-    
-    const total = strokes[sym];
-    const variants = strokeExpansionRulesCleaned[sym];
-    const results = [];
-    
-    // 分离恒等变体
+
+    if (!targetSym) {
+        const result = [strokes];
+        memo.set(cacheKey, result);
+        return result;
+    }
+
+    const totalCount = strokes[targetSym];
+    const variants = strokeExpansionRulesCleaned[targetSym];
+    const allResults = [];
+
     let hasIdentity = false;
-    const realVariants = [];
+    const otherVariants = [];
     for (const v of variants) {
-        if (Object.keys(v).length === 1 && v[sym] === 1) {
+        if (Object.keys(v).length === 1 && v[targetSym] === 1) {
             hasIdentity = true;
         } else {
-            realVariants.push(v);
+            otherVariants.push(v);
         }
     }
-    
-    // realVariants 一定非空（因为 sym 是通过有非恒等规则的条件找到的）
-    
-    function allocate(remain, idx, distribution) {
-        if (idx === realVariants.length - 1) {
-            distribution.push(remain);
-            
-            const next = { ...strokes };
-            delete next[sym];
-            
-            for (let i = 0; i < realVariants.length; i++) {
-                const times = distribution[i];
+
+    function enumerate(remaining, idx, selections) {
+        if (idx === otherVariants.length - 1) {
+            selections.push(remaining);
+            const nextState = { ...strokes };
+            delete nextState[targetSym];
+            for (let i = 0; i < otherVariants.length; i++) {
+                const times = selections[i];
                 if (times === 0) continue;
-                const v = realVariants[i];
-                for (const [s, c] of Object.entries(v)) {
-                    next[s] = (next[s] || 0) + c * times;
+                const variant = otherVariants[i];
+                for (const [k, cnt] of Object.entries(variant)) {
+                    nextState[k] = (nextState[k] || 0) + cnt * times;
                 }
             }
-            
-            for (const sub of expandStrokes(next, memo)) {
-                results.push(sub);
+            for (const sub of expandStrokes(nextState, memo)) {
+                allResults.push(sub);
             }
-            
-            distribution.pop();
+            selections.pop();
             return;
         }
-        
-        for (let i = 0; i <= remain; i++) {
-            distribution.push(i);
-            allocate(remain - i, idx + 1, distribution);
-            distribution.pop();
+        for (let i = 0; i <= remaining; i++) {
+            selections.push(i);
+            enumerate(remaining - i, idx + 1, selections);
+            selections.pop();
         }
     }
-    
-    allocate(total, 0, []);
-    
+
+    enumerate(totalCount, 0, []);
+
     if (hasIdentity) {
-        results.push(strokes);
+        const remainingState = { ...strokes };
+        delete remainingState[targetSym];
+        const subResults = expandStrokes(remainingState, memo);
+        for (const sub of subResults) {
+            const withSym = { ...sub, [targetSym]: totalCount };
+            allResults.push(withSym);
+        }
     }
-    
-    const unique = new Map();
-    for (const r of results) {
-        const k = JSON.stringify(Object.entries(r).sort());
-        if (!unique.has(k)) unique.set(k, r);
+
+    const uniqueMap = new Map();
+    for (const res of allResults) {
+        const key = JSON.stringify(Object.entries(res).sort());
+        if (!uniqueMap.has(key)) uniqueMap.set(key, res);
     }
-    const out = Array.from(unique.values());
-    
-    memo.set(key, out);
-    return out;
+    const finalResults = Array.from(uniqueMap.values());
+
+    memo.set(cacheKey, finalResults);
+    return finalResults;
 }
 
 const charStrokes = {
