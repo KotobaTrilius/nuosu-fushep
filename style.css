@@ -1,501 +1,386 @@
+/* ==========================================================
+   1. DESIGN TOKENS
+   ========================================================== */
+:root {
+  /* --- Colors: Palette --- */
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-light: #e0e7ff;
+  
+  --color-danger-bg: #fee2e2;
+  --color-danger-border: #fecaca;
+  --color-danger-text: #991b1b;
+  
+  --color-success-bg: #c8e6c9;
+  --color-success-border: #4caf50;
+  
+  --color-warning-bg: #fff3cd;
+  --color-warning-border: #ffeeba;
+  --color-warning-text: #856404;
+
+  /* --- Colors: Neutrals --- */
+  --color-bg-page: #f4f4f9;
+  --color-bg-surface: #ffffff;
+  --color-bg-subtle: #f8fafc;
+  --color-bg-muted: #fafafa;
+  --color-border-default: #eee;
+  --color-border-input: #ccc;
+  --color-border-focus: var(--color-primary);
+  
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-text-placeholder: #666;
+  --color-text-disabled: #888;
+  --color-text-dark: #333;
+
+  /* --- Spacing & Layout --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 10px;
+  --space-4: 15px;
+  --space-5: 20px;
+  --space-6: 25px;
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 2px 10px rgba(0,0,0,0.1);
+
+  /* ========================================================
+     TYPOGRAPHY SYSTEM 
+     ======================================================== */
+
+
+  --res-font-sans: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --res-font-zh-cn: "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --res-font-zh-tw: "Source Han Sans TC", "PingFang TC", sans-serif;
+  --res-font-ja: "Yu Gothic", "Meiryo", "Hiragino Kaku Gothic ProN", "MS PGothic", sans-serif;
+  --res-font-ko: "Source Han Sans KR", sans-serif;
+
+  --res-font-yi: "NiepSha Sans", "Noto Sans Yi", "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --res-font-yi-cursive: "NiepSha Cursive";
+  --res-font-ipa: "Fira Sans", serif;
+
+  --res-font-transcription: "Bahnschrift", "Consolas", "Courier New", monospace, "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  --font-ui: var(--res-font-sans);
+  --font-input: var(--font-ui);
+}
+
+:lang(zh), :lang(zh-CN) { --font-ui: var(--res-font-zh-cn); }
+:lang(zh-TW) { --font-ui: var(--res-font-zh-tw); }
+:lang(ja) { --font-ui: var(--res-font-ja); }
+:lang(ko) { --font-ui: var(--res-font-ko); }
+:lang(ii) { 
+  --font-ui: var(--res-font-yi); 
+  --font-input: var(--res-font-transcription); /* 彝文模式下，输入框降级为转写策略 */
+}
+
+:lang(en) :lang(za) { font-family: var(--res-font-sans); }
+
+
+/* ==========================================================
+   2. FONTS & FOUNDATION
+   ========================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Yi&display=swap');
 
-@font-face {
-    font-family: 'NiepSha Cursive';
-    src: url('fonts/NiepShaExtremum-Cursive-Beta-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'NiepSha Cursive';
-    src: url('fonts/NiepShaExtremum-Cursive-Beta-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'NiepSha Cursive';
-    src: url('fonts/NiepShaExtremum-Cursive-Beta-Black.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'NiepSha Sans';
-    src: url('fonts/NiepShaExtremum-Sans-Beta-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'NiepSha Sans';
-    src: url('fonts/NiepShaExtremum-Sans-Beta-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
+@font-face { font-family: 'NiepSha Cursive'; src: url('fonts/NiepShaExtremum-Cursive-Beta-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NiepSha Cursive'; src: url('fonts/NiepShaExtremum-Cursive-Beta-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NiepSha Cursive'; src: url('fonts/NiepShaExtremum-Cursive-Beta-Black.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NiepSha Sans'; src: url('fonts/NiepShaExtremum-Sans-Beta-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NiepSha Sans'; src: url('fonts/NiepShaExtremum-Sans-Beta-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
 
 body {
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 20px;
+  font-family: var(--font-ui);
+  background-color: var(--color-bg-page);
+  margin: 0;
+  padding: var(--space-5);
+  color: var(--color-text-primary);
 }
 
-:lang(zh), :lang(zh-CN) {
-    font-family: "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", sans-serif;
+button, input, select, textarea {
+  font-family: var(--font-ui);
 }
 
-:lang(zh-TW) {
-    font-family: "Source Han Sans TC", "PingFang TC", sans-serif;
-}
-
-:lang(en) :lang(za) {
-    font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
-}
-
-:lang(ja) {
-    font-family: "Yu Gothic", "Meiryo", "Hiragino Kaku Gothic ProN", "MS PGothic", sans-serif;
-}
-
-:lang(ko) {
-    font-family: "Source Han Sans KR", sans-serif;
-}
-
-:lang(ii) {
-    font-family: "NiepSha Sans", "Noto Sans Yi", "Source Han Sans CN", "PingFang SC", "Microsoft YaHei", sans-serif;
-}
-
+/* ==========================================================
+   3. LAYOUT
+   ========================================================== */
 .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--color-bg-surface);
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
 }
 
-.input-section {
-    position: relative;
+.workspace {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  height: 500px;
 }
 
+.mode-panel, #panel-pinyin {
+  display: none;
+  width: 100%;
+  height: 100%;
+  gap: var(--space-5);
+}
+.mode-panel.active, #panel-pinyin.active { display: flex; }
+
+.side-bar {
+  flex: 0 0 220px;
+  background-color: var(--color-bg-muted);
+  border: 1px solid var(--color-border-default);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  border: 1px solid var(--color-border-default);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  overflow-y: auto;
+}
+
+/* ==========================================================
+   4. TYPOGRAPHY COMPONENTS
+   ========================================================== */
 .editor-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
 }
 
 .title-group {
-    align-items: center;
-    gap: 25px;
-    margin-bottom: 10px;
-    margin-top: -10px;
+  align-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-3);
+  margin-top: -10px;
+}
+.title-group h2 { margin: 0; font-size: var(--fs-2xl); }
+.title-latin { font-family: var(--res-font-sans); position: relative; }
+.subtitle { margin: 2px 0 0 0; font-size: 0.9rem; color: var(--color-text-placeholder); font-weight: normal; }
+
+.yi-logo {
+  font-family: var(--res-font-yi-cursive) !important;
+  font-size: var(--fs-logo);
+  font-weight: 900;
+  letter-spacing: 3px;
 }
 
-.title-group h2 {
-    margin: 0;
-    font-size: 1.5rem;
+.ipa { font-family: var(--res-font-ipa); font-size: 105%; }
+.hint { color: var(--color-text-disabled); grid-column: 1 / -1; }
+.side-bar h3, .main-content h3, .side-bar h4 { font-size: var(--fs-base); margin-top: 0; margin-bottom: var(--space-3); }
+
+:root {
+  --fs-xs: 12px; --fs-sm: 14px; --fs-base: 16px; --fs-md: 18px;
+  --fs-lg: 20px; --fs-xl: 25px; --fs-2xl: 1.5rem; --fs-logo: 200%;
 }
 
-.title-latin {
-    font-family: "Segoe UI", sans-serif;
-    position: relative;
+/* ==========================================================
+   5. UI COMPONENTS
+   ========================================================== */
+
+/* --- Inputs --- */
+#editor, .pinyin-input-box {
+  width: 100%;
+  padding: var(--space-3);
+  font-size: var(--fs-md);
+  border: 2px solid var(--color-border-focus);
+  border-radius: var(--radius-sm);
+  box-sizing: border-box;
+}
+#editor {
+  height: 100px;
+  resize: vertical;
+  border-width: 1px;
+  border-color: var(--color-border-input);
+  font-family: var(--font-ui);
+}
+.pinyin-input-box { 
+  margin-bottom: var(--space-3);
+  font-family: var(--font-input);
 }
 
-.subtitle {
-    margin: 2px 0 0 0;
-    font-size: 0.9rem;
-    color: #666;
-    font-weight: normal;
+#lang-selector {
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-input);
+  font-size: var(--fs-sm);
+  cursor: pointer;
 }
 
+/* --- Buttons (Base) --- */
+button {
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background: var(--color-bg-surface);
+  padding: var(--space-2) 12px;
+  margin: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+button:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+/* --- Button Variants --- */
+.copy-btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  transition: background 0.2s;
+}
+.copy-btn:hover { background-color: var(--color-primary-hover); }
+
+.tab-btn {
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--fs-base);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+.tab-btn.active { border-bottom-color: var(--color-primary); color: var(--color-primary); font-weight: bold; }
+
+.action-btn {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger-text);
+  border-color: var(--color-danger-border);
+  width: 100%;
+  margin: var(--space-3) 0;
+}
+
+/* --- Specific Input Buttons --- */
+.char-btn, .radical-btn { font-family: var(--res-font-yi); }
+
+.char-btn {
+  font-size: var(--fs-xl);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 40px;
+  width: 100%;
+  padding: 5px 0;
+  margin: 0;
+}
+.radical-btn { width: 100%; text-align: left; white-space: pre-wrap; margin: 2px 0; }
+
+.stroke-key-btn {
+  font-weight: bold;
+  font-family: var(--res-font-transcription);
+  font-size: var(--fs-lg);
+  margin: 2px;
+  padding: var(--space-1) 0;
+}
+
+/* --- Info & Feedback Boxes --- */
+.transliteration-box {
+  margin-top: 5px;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-bg-subtle);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  font-family: var(--res-font-sans);
+  font-size: var(--fs-base);
+  color: var(--color-text-secondary);
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+}
+.trans-label { font-weight: bold; color: var(--color-text-muted); margin-right: var(--space-2); font-size: var(--fs-sm); white-space: nowrap; }
+#trans-content { color: var(--color-text-primary); }
+
+.info-box {
+  flex: 1;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-warning-text);
+  min-height: 20px;
+  font-size: var(--fs-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.stroke-display {
+  background: var(--color-bg-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  min-height: 36px;
+  padding: var(--space-2);
+  font-family: var(--res-font-transcription);
+  font-size: var(--fs-lg);
+  letter-spacing: 3px;
+  margin-bottom: var(--space-3);
+  word-break: break-all;
+  color: var(--color-text-dark);
+}
+
+/* ==========================================================
+   6. GRIDS & STRUCTURES
+   ========================================================== */
+.char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(32px, 1fr)); gap: var(--space-1); }
+.stroke-grid, .pinyin-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: var(--space-3); }
+.tabs { border-bottom: 2px solid var(--color-border-default); display: flex; gap: var(--space-3); flex-shrink: 0; }
+.input-section { position: relative; }
+
+.header-controls { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+.star-align-wrapper { display: flex; align-items: center; gap: var(--space-2); }
+.star-me-caption { font-size: 12pt; color: var(--color-text-placeholder); line-height: 1; margin-bottom: 5pt; }
+
+.controls-row { display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-5); margin-bottom: var(--space-4); gap: var(--space-5); }
+.controls-row-top { margin-left: auto; }
+.controls-row-bottom { margin-left: auto; align-items: center; height: 30px; justify-content: flex-end; }
+
+/* ==========================================================
+   7. STATES & OVERRIDES
+   ========================================================== */
+.exact-match { background: var(--color-success-bg); border-color: var(--color-success-border); }
+
+/* --- Yi Language Specific Scaling --- */
 html[lang="ii"] .subtitle, 
 html[lang="ii"] .tab-btn,
 html[lang="ii"] .trans-label,
 html[lang="ii"] .info-box,
 html[lang="ii"] .star-me-caption {
-    font-size: 1.05em;
-    line-height: 0.8;
+  font-size: 1.05em;
+  line-height: 0.8;
 }
+html[lang="ii"] .stroke-label { font-size: 2em; }
 
-html[lang="ii"] .stroke-label {
-    font-size: 2em;
-} /* DOESN'T WORK 🤔 */
+/* --- Radical Panel Structure Overrides --- */
+#radical-char-buttons.char-grid { display: block !important; grid-template-columns: none !important; }
+.radical-stroke-row { display: flex !important; flex-direction: row !important; align-items: flex-start !important; width: 100% !important; margin-bottom: 12px !important; padding-bottom: var(--space-2) !important; border-bottom: 1px solid #eaeaea !important; box-sizing: border-box !important; }
+.radical-stroke-row:last-child { border-bottom: none !important; margin-bottom: 0 !important; }
+.stroke-label { display: block !important; flex-shrink: 0 !important; width: 85px !important; text-align: right !important; font-weight: bold !important; color: var(--color-text-dark) !important; font-size: var(--fs-sm); margin-right: var(--space-4) !important; margin-top: var(--space-1) !important; }
+.stroke-char-list { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 6px !important; flex: 1 !important; justify-content: flex-start !important; }
+.stroke-char-list .char-btn { margin: 0 !important; padding: 0 !important; width: auto !important; min-width: 36px !important; height: 36px !important; border: 1px solid #ddd !important; background: var(--color-bg-surface) !important; }
 
-.header-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-    align-items: center;
-}
-
-.star-align-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.star-me-caption {
-    font-size: 12pt;
-    color: #666;
-    line-height: 1;
-    margin-bottom: 5pt;
-}
-
-.controls-row-top {
-    margin-left: auto;
-}
-
-.controls-row-bottom {
-    margin-left: auto;
-    align-items: center;
-    height: 30px;
-    justify-content: flex-end;
-}
-
-#lang-selector {
-    padding: 6px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.copy-btn {
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s;
-}
-
-.copy-btn:hover {
-    background-color: #4338ca;
-}
-
-#editor {
-    width: 100%;
-    height: 100px;
-    font-size: 18px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-    box-sizing: border-box;
-}
-
-.transliteration-box {
-    margin-top: 5px;
-    padding: 8px 10px;
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    font-family: "Segoe UI", sans-serif;
-    font-size: 16px;
-    color: #475569;
-    min-height: 20px;
-    display: flex;
-    align-items: center;
-    word-break: break-all;
-}
-
-.trans-label {
-    font-weight: bold;
-    color: #64748b;
-    margin-right: 8px;
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-#trans-content {
-    color: #0f172a;
-}
-
-.info-box {
-    flex: 1;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    padding: 8px 15px;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    border-radius: 4px;
-    color: #856404;
-    min-height: 20px;
-    font-size: 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.controls-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    gap: 20px;
-}
-
-.tabs {
-    border-bottom: 2px solid #eee;
-    display: flex;
-    gap: 10px;
-    flex-shrink: 0;
-}
-
-.tab-btn {
-    padding: 10px 20px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-}
-
-.tab-btn.active {
-    border-bottom-color: #4f46e5;
-    color: #4f46e5;
-    font-weight: bold;
-}
-
-.workspace {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    height: 500px;
-}
-
-.mode-panel {
-    display: none;
-    width: 100%;
-    height: 100%;
-    gap: 20px;
-}
-
-.mode-panel.active {
-    display: flex;
-}
-
-.side-bar {
-    flex: 0 0 220px;
-    background-color: #fafafa;
-    border: 1px solid #eee;
-    padding: 15px;
-    border-radius: 4px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.main-content {
-    flex: 1;
-    border: 1px solid #eee;
-    padding: 15px;
-    border-radius: 4px;
-    overflow-y: auto;
-}
-
-.side-bar h3, .main-content h3, .side-bar h4 {
-    font-size: 16px;
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-button {
-    cursor: pointer;
-    border: 1px solid #ddd;
-    background: white;
-    padding: 8px 12px;
-    margin: 4px;
-    border-radius: 4px;
-    transition: all 0.2s;
-}
-
-button:hover {
-    background-color: #e0e7ff;
-    border-color: #4f46e5;
-}
-
-.radical-btn {
-    width: 100%;
-    text-align: left;
-    white-space: pre-wrap;
-    margin: 2px 0;
-}
-
-.char-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
-    gap: 4px;
-}
-
-.char-grid button {
-    max-width: 40px;
-    width: 100%;
-    padding: 5px 0;
-    margin: 0;
-}
-
-.char-btn {
-    font-size: 25px;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hint {
-    color: #888;
-    grid-column: 1 / -1;
-}
-
-.action-btn {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border-color: #fecaca;
-    width: 100%;
-    margin: 10px 0;
-}
-
-.stroke-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
-    margin-top: 10px;
-}
-
-.stroke-key-btn {
-    font-weight: bold;
-    font-family: "Bahnschrift", "Segoe UI", sans-serif;
-    font-size: 18px;
-    margin: 2px;
-    padding: 4px 0;
-}
-
-.stroke-display {
-    background: #fff;
-    border: 2px solid #4f46e5;
-    border-radius: 4px;
-    min-height: 36px;
-    padding: 8px;
-    font-family: "Bahnschrift", "Segoe UI", monospace;
-    font-size: 20px;
-    letter-spacing: 3px;
-    margin-bottom: 10px;
-    word-break: break-all;
-    color: #333;
-}
-
-.pinyin-input-box {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    border: 2px solid #4f46e5;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    font-family: "Bahnschrift", sans-serif;
-    box-sizing: border-box;
-}
-
-.pinyin-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
-    margin-top: 10px;
-}
-
-#panel-pinyin {
-    display: none;
-    width: 100%;
-    height: 100%;
-    gap: 20px;
-}
-
-#panel-pinyin.active {
-    display: flex;
-}
-
-.char-btn, .radical-btn {
-    font-family: "NiepSha Sans", "Noto Sans Yi", "Microsoft YaHei", sans-serif;
-}
-
-.exact-match {
-    background: #c8e6c9;
-    border-color: #4caf50;
-}
-
-.yi-logo {
-    font-family: "NiepSha Cursive" !important;
-    font-size: 200%;
-    font-weight: 900;
-    letter-spacing: 3px;
-}
-
-#radical-char-buttons.char-grid {
-    display: block !important;
-    grid-template-columns: none !important;
-}
-
-.radical-stroke-row {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    width: 100% !important;
-    margin-bottom: 12px !important;
-    padding-bottom: 8px !important;
-    border-bottom: 1px solid #eaeaea !important;
-    box-sizing: border-box !important;
-}
-
-.radical-stroke-row:last-child {
-    border-bottom: none !important;
-    margin-bottom: 0 !important;
-}
-
-.stroke-label {
-    display: block !important;
-    flex-shrink: 0 !important;
-    width: 85px !important;
-    text-align: right !important;
-    font-weight: bold !important;
-    color: #444 !important;
-    font-size: 14px !important;
-    margin-right: 15px !important;
-    margin-top: 4px !important;
-}
-
-.stroke-char-list {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    gap: 6px !important;
-    flex: 1 !important;
-    justify-content: flex-start !important;
-}
-
-.stroke-char-list .char-btn {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-    min-width: 36px !important;
-    height: 36px !important;
-    border: 1px solid #ddd !important;
-    background: white !important;
-}
-
-.ipa {
-    font-family: "Fira Sans", serif;
-    font-size: 105%;
+/* ==========================================================
+   8. RESPONSIVE
+   ========================================================== */
+@media (max-width: 768px) {
+  .container { box-shadow: none; margin: 0; padding: 12px; border-radius: 0; }
+  body { padding: 0; }
+  .editor-header { font-size: 0.85em; }
 }
