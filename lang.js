@@ -1,7 +1,7 @@
 const translations = {
     "zh-CN": {
         subtitle: "凉山规范彝文检字编辑器",
-        star_me: "在GitHub上为我打个星 →",
+        star_me: "在GitHub上为此项目打个星 →",
         editor_placeholder: "在此处输入或点击下方按钮插入字符...",
         copy_btn: "📋 复制文本",
         copied: "✅ 已复制",
@@ -55,7 +55,7 @@ const translations = {
     },
     "zh-TW": {
         subtitle: "涼山規範彝文檢字編輯器",
-        star_me: "在GitHub上為我打个星 →",
+        star_me: "在GitHub上為此項目打个星 →",
         editor_placeholder: "在此處輸入或點擊下方按鈕插入字元...",
         copy_btn: "📋 複製文字",
         copied: "✅ 已複製",
@@ -109,7 +109,7 @@ const translations = {
     },
     en: {
         subtitle: "Nuosu Yi Syllabary Character Finder & Editor",
-        star_me: "Star me on GitHub →",
+        star_me: "Star this project on GitHub →",
         editor_placeholder: "Type here or click buttons to insert characters...",
         copy_btn: "📋 Copy Text",
         copied: "✅ Copied",
@@ -271,7 +271,7 @@ const translations = {
     },
     ii: {
         subtitle: "ꆃꎭꋊꄻꆈꌠꁱꂷꎹꏦꏓꁱꅍ",
-        star_me: "GitHubꐥꄉꃅꏸꂷꉡꍈ →",
+        star_me: "GitHubꐥꄉꃅꏸꂷꐘꋋꂷꍈ →",
         editor_placeholder: "在此处输入或点击下方按钮插入字符...",
         copy_btn: "📋 ꁱꂷꌡꄉꄻ",
         copied: "✅ 已复制",
@@ -294,8 +294,8 @@ const translations = {
         radical_stroke_4: "ꇖꇅ",
         radical_stroke_5: "ꉬꇅꌋꆀꈍꉐ",
         
-        stroke_input_title: "笔画输入",
-        stroke_clear_btn: "清空笔画 (Esc)",
+        stroke_input_title: "ꁱꑟꁱ",
+        stroke_clear_btn: "ꌩꎳꇫꎭ (Esc)",
         stroke_keyboard_title: "笔画键盘",
         stroke_match_title: "匹配字符",
         stroke_count_suffix: "个结果",
@@ -303,9 +303,9 @@ const translations = {
         stroke_no_match: "未找到匹配字符",
 
         tab_pinyin: "ꃚꁆꁱꂷꎹꏦ",
-        pinyin_input_title: "转写输入",
+        pinyin_input_title: "ꃚꁆꁱꂷꁱ",
         pinyin_placeholder: "输入拉丁转写：",
-        pinyin_clear_btn: "清空 (Esc)",
+        pinyin_clear_btn: "ꌩꎳꇫꎭ (Esc)",
         pinyin_match_title: "匹配字符",
         pinyin_hint: "输入拉丁转写以筛选字符（从前侧匹配）",
         pinyin_no_match: "未找到匹配字符",
@@ -325,7 +325,7 @@ const translations = {
     },
     "za": {
         subtitle: "Hongdawz Rasaw Sanraiz Sawyizcuz Gveihfan Liengzsanh",
-        star_me: "Youq GitHub hawj gou aen sing ndeu nw →",
+        star_me: "Youq GitHub hawj aen hanghmoeg neix aen sing ndeu nw →",
         editor_placeholder: "Youq gizneix coqhaeuj roxnaeuz mbaenq gij anniuj baihlaj daeuj caphaeuj cihsaw...",
         copy_btn: "📋 Fukceiq cihsaw",
         copied: "✅ Fukceiq liux",
