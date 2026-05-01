@@ -1,4 +1,4 @@
-[![en](https://img.shields.io/badge/en-English-blue.svg)](https://github.com/KotobaTrilius/nuosu-fushep/blob/master/README.md)
+[![en](https://img.shields.io/badge/en-English-blue.svg)](https://github.com/KotobaTrilius/nuosu-fushep/blob/main/README.md)
 
 # Nuosu FUSHEP
 ꃚꎹ / FUSHEP（发音 /fū.ʂɤ̂/）——凉山规范彝文检字编辑器
