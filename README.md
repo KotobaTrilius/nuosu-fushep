@@ -1,3 +1,7 @@
+[![zh-CN](https://img.shields.io/badge/zh-Chinese_(S)-red.svg)](https://github.com/KotobaTrilius/nuosu-fushep/blob/main/README.zh-CN.md)
+[![zh-TW](https://img.shields.io/badge/zh-Chinese_(T)-orange.svg)](https://github.com/KotobaTrilius/nuosu-fushep/blob/main/README.zh-TW.md)
+[![ja](https://img.shields.io/badge/ja-Japanese-pink.svg)](https://github.com/KotobaTrilius/nuosu-fushep/blob/main/README.ja.md)
+
 # Nuosu FUSHEP
 ꃚꎹ / FUSHEP (pronounced /fū.ʂɤ̂/, _foo-SHUR_), a Nuosu Yi Syllabary Character Finder &amp; Editor
 
