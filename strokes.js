@@ -94,27 +94,6 @@ function arrToCountObj(arr) {
     return result;
 }
 
-/**
- * @type {Object.<string, Object<string, number>[]>}
- */
-const strokeExpansionRulesCleaned = Object.fromEntries(
-    Object.entries(strokeExpansionRules)
-        .map(([k, v]) => [k, v
-            .map(x => typeof x === 'string' ? [x] : x)
-            // turn string into string[]
-            .map(arr => arrToCountObj(arr))
-            // turn string[] into <string, number>
-        ]) 
-);
-
-const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
-    .map(arr => arr.flat()).flat()
-    .filter(elem => !strokeExpansionRules[elem] ||
-        // VALUES THAT DO NOT APPEAR AS KEYS, OR
-        strokeExpansionRules[elem].includes(elem)
-        // VALUES IN IDENTITY MAPPINGS
-));
-
 function expandStrokes(strokes, memo) {
     const cacheKey = JSON.stringify(Object.entries(strokes).sort());
     if (memo.has(cacheKey)) return memo.get(cacheKey);
@@ -1450,6 +1429,27 @@ const charStrokes = {
                 .join('\n'));
     }
 }
+
+/**
+ * @type {Object.<string, Object<string, number>[]>}
+ */
+const strokeExpansionRulesCleaned = Object.fromEntries(
+    Object.entries(strokeExpansionRules)
+        .map(([k, v]) => [k, v
+            .map(x => typeof x === 'string' ? [x] : x)
+            // turn string into string[]
+            .map(arr => arrToCountObj(arr))
+            // turn string[] into <string, number>
+        ]) 
+);
+
+const inputtableStrokes = new Set(Object.values(strokeExpansionRules)
+    .map(arr => arr.flat()).flat()
+    .filter(elem => !strokeExpansionRules[elem] ||
+        // VALUES THAT DO NOT APPEAR AS KEYS, OR
+        strokeExpansionRules[elem].includes(elem)
+        // VALUES IN IDENTITY MAPPINGS
+));
 
 const charStrokesExpanded = (function() {
     const memo = new Map();
