@@ -366,7 +366,7 @@ html[lang="ii"] .star-me-caption {
   font-size: 1.05em;
   line-height: 0.8;
 }
-html[lang="ii"] .stroke-label { font-size: 2em; }
+html[lang="ii"] .stroke-label { font-size: 1.15em; }
 
 /* --- Radical Panel Structure Overrides --- */
 #radical-char-buttons.char-grid { display: block !important; grid-template-columns: none !important; }
