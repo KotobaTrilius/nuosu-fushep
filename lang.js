@@ -162,7 +162,7 @@ const translations = {
         copy_error_alert: "Copy error."
     },
     ja: {
-        subtitle: "フシャ — 涼山規範彝（イ）文字検索・エディタ",
+        subtitle: "フシャ — 涼山規範彝（イ）文字検索・編集ツール",
         star_me: "GitHubのスターをお願いします →",
         editor_placeholder: "ここに入力するか、ボタンをクリックして文字を挿入...",
         copy_btn: "📋 テキストをコピー",
