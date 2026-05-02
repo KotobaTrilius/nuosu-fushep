@@ -1238,8 +1238,10 @@ const charInfo = {
     "】": "]",
     "《": "<",
     "》": ">",
-    // QUOTATION MARK (LEFT ONLY)
-    "“": "\"",
+    // QUOTATION MARK
+    "”": "\"",
+    "’": "'",
+    "“": "\"", // covers above
     "‘": "'",
 };
 
