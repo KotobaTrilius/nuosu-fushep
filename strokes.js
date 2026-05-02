@@ -675,7 +675,7 @@ const charStrokes = {
     "ꇪ": ['ET3', '2U1', '2R3'],
     "ꇫ": ['J1', '/', '2R5', 'A'],
     "ꇬ": ['J1', '/', '2R5'],
-    "ꇭ": ['R2', '3R3'],
+    "ꇭ": ['-', '3R3'],
     "ꇮ": ['M1', '-', '|'],
     "ꇯ": ['R3', 'Z', 'A'],
     "ꇰ": ['R3', 'Z'],
@@ -683,7 +683,7 @@ const charStrokes = {
     "ꇲ": ['O', '-', '2R3', 'D1'],
     "ꇳ": ['U1', '-', 'A'],
     "ꇴ": ['U1', '-'],
-    "ꇵ": ['0', 'U1', '-'],
+    "ꇵ": ['O', 'U1', '-'],
     "ꇶ": ['U1', '-', '/', '\\', 'A'],
     "ꇷ": ['U1', '/', '\\'],
     "ꇸ": ['L1', '3R2'],
@@ -1341,7 +1341,7 @@ const charStrokes = {
     "ꒄ": ['T1', '|', 'J1'],
     "ꒅ": ['N1', 'TZ', 'A'],
     "ꒆ": ['N1', 'TZ'],
-    "ꒇ": ['U1', '|', '-', 'A1', '|'],
+    "ꒇ": ['U1', '|', '-', 'A', '|'],
     "ꒈ": ['C1', '|', 'A'],
     "ꒉ": ['C1', '|'],
     "ꒊ": ['ER2', 'C1'],
@@ -1513,24 +1513,26 @@ function resolveCharsFromStrokes(strokes) {
     for (const candidate of candidates) {
         const expansions = charStrokesExpanded[candidate];
         let match = false;
-        let exact = false;
+        let minEditDistance = Infinity;
+
         for (const expansion of expansions) {
             if (Object.keys(expansion).length < Object.keys(countObj).length)
                 continue;
 
             let expansionMatch = Object.keys(countObj)
                 .every(key => key in expansion);
-            let expansionExact = expansionMatch && Object.entries(expansion)
-                .every(([key, value]) => key in countObj &&
-                    countObj[key] === value);
+            let editDistance = expansionMatch
+                ? Object.entries(expansion)
+                    .map(([key, value]) => value - countObj[key])
+                    .reduce((total, current) => total + current)
+                : Infinity;
 
-            if (expansionMatch) match = true;
-            if (expansionExact) {
-                exact = true;
-                break;
-            }
+            match = match || expansionMatch;
+
+            if (editDistance < minEditDistance) minEditDistance = editDistance;
         }
-        if (match) ret.push([candidate, exact]);
+
+        if (match) ret.push([candidate, minEditDistance]);
     }
 
     if (prevChar !== undefined && compress(prevChar) !== undefined && ret.length > 0) {
@@ -1540,14 +1542,12 @@ function resolveCharsFromStrokes(strokes) {
             return { elem, prob };
         });
 
-        withProbs.sort((a, b) => b.prob - a.prob);
-
-        console.log('Sorted candidates by probability (descending):');
-        withProbs.forEach(({ elem, prob }) => {
-            console.log(`  ${elem[0]}: ${prob}`);
+        withProbs.sort((a, b) => {
+            const delta = a.elem[1] - b.elem[1];
+            return delta === 0 ? b.prob - a.prob : delta;
         });
 
-        const sortedRet = withProbs.map(item => item.elem);
+        const sortedRet = withProbs.map(item => item.elem).map(([char, ed]) => [char, ed === 0]);
 
         ret.length = 0;
         ret.push(...sortedRet);
