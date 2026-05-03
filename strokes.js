@@ -1520,7 +1520,7 @@ function resolveCharsFromStrokes(strokes) {
                 continue;
 
             let expansionMatch = Object.keys(countObj)
-                .every(key => key in expansion);
+                .every(key => key in expansion && expansion[key] >= countObj[key]);
             let editDistance = expansionMatch
                 ? Object.entries(expansion)
                     .map(([key, value]) => value - countObj[key])
