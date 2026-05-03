@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pinyinCharContainer = document.getElementById('pinyin-char-buttons');
     const pinyinMatchCountLabel = document.getElementById('pinyin-match-count');
     const clearPinyinBtn = document.getElementById('clear-pinyin-btn');
+    const submitPinyinBtn = document.getElementById('submit-pinyin-btn');
 
     window.pinyinTrie = {};
 
@@ -127,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pinyinInput.addEventListener('keydown', (e) => {
         if (e.key == 'Enter') flushPinyinExactMatches();
     });
+
+    submitPinyinBtn.addEventListener('click', flushPinyinExactMatches);
 
     function clearPinyin() {
         pinyinInput.value = "";
