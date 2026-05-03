@@ -412,8 +412,8 @@ const charStrokes = {
     "ꃖ": ['D1', 'C1', '\\', '/', '|'],
     "ꃗ": ['\\', 'C1', '/', '|', '-', '2R3'],
     "ꃘ": ['2R3', 'F', 'R3'],
-    "ꃙ": ['2|', '-', '\\', '/', 'A'],
-    "ꃚ": ['2|', '-', '\\', '/'],
+    "ꃙ": ['H1', '\\', '/', 'A'],
+    "ꃚ": ['H1', '\\', '/'],
     "ꃛ": ['K1', '4R3'],
     "ꃜ": ['D1', 'R3', 'N1', 'A'],
     "ꃝ": ['D1', 'R3', 'N1'],
@@ -517,7 +517,7 @@ const charStrokes = {
     "ꄿ": ['TI', 'K1'],
     "ꅀ": ['N1', 'TI', '-'],
     "ꅁ": ['-', '|', 'O1', 'A'],
-    "ꅂ": ['-', '|'],
+    "ꅂ": ['-', '|', 'O1'],
     "ꅃ": ['-', '|', 'K2'],
     "ꅄ": ['F', 'U1', '3R3'],
     "ꅅ": ['U1', 'T1', '3R3', 'A'],
@@ -1112,7 +1112,7 @@ const charStrokes = {
     "ꎒ": ['N1', 'T1', 'A', 'A'],
     "ꎓ": ['N1', 'T1', 'A'],
     "ꎔ": ['O1', '-', '2R3'],
-    "ꎕ": ['O1', '4R3', 'A'],
+    "ꎕ": ['O1', '-', '4R3', 'A'],
     "ꎖ": ['O1', '4R3'],
     "ꎗ": ['2|', '2/'],
     "ꎘ": ['G2', 'T1', 'A'],
@@ -1497,6 +1497,7 @@ Object.entries(charStrokesExpanded).forEach(([char, countObjs]) => {
 /**
  * 
  * @param {string[]} strokes
+ * @param {function(): string} getPrevChar
  * @returns {[string, bool][]}
  */
 function resolveCharsFromStrokes(strokes, getPrevChar) {
@@ -1519,7 +1520,7 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
         });
     }
 
-    const ret = [];
+    let ret = [];
 
     const prevChar = getPrevChar();
 
@@ -1561,10 +1562,7 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
 
         console.log(withProbs);
 
-        const sortedRet = withProbs.map(item => item.elem).map(([char, ed]) => [char, ed === 0]);
-
-        ret.length = 0;
-        ret.push(...sortedRet);
+        ret = withProbs.map(item => item.elem).map(([char, ed]) => [char, ed === 0]);
     } else if (ret.length > 0) {
         console.log('Skipping probability sort (prevChar undefined or compress(prevChar) undefined)');
     }
@@ -1602,10 +1600,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addStroke(stroke) {
-        let strokeArray = currentStrokes.split('');
-        strokeArray.push(stroke);
-        strokeArray.sort();
-        currentStrokes = strokeArray.join('');
+        currentStrokes += stroke;
+
+        updateStrokeUI();
+        filterCharsByStrokes();
+    }
+
+    function deleteStroke() {
+        currentStrokes = currentStrokes.slice(0, currentStrokes.length - 1);
 
         updateStrokeUI();
         filterCharsByStrokes();
@@ -1658,6 +1660,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function flushSingleChar(index) {
+        const elements = strokeCharContainer.querySelectorAll('.exact-match');
+        if (index in elements) {
+            insertAtCursor(editor, elements[index].textContent);
+            editor.blur();
+            clearStrokes();
+        }
+    }
+
     document.addEventListener('keydown', (e) => {
         if (!document.getElementById('panel-stroke').classList.contains('active')) return;
         if (e.ctrlKey || e.altKey || e.metaKey) return;
@@ -1668,7 +1679,18 @@ document.addEventListener('DOMContentLoaded', () => {
             addStroke(key);
         } else if (e.key === 'Escape') {
             clearStrokes();
-        }
+        } else if (!window.editor.hasFocus) {
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                deleteStroke();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                flushSingleChar(0);
+            } else if (e.key >= '1' && e.key <= '9') {
+                e.preventDefault();
+                flushSingleChar(e.key - 1);
+            }
+        } 
     });
 
     clearStrokeBtn.addEventListener('click', clearStrokes);
