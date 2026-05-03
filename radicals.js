@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 renderRadicalChars(radicalChar, radicalData);
                 const radicalGroupName = (
-                    ["za"].includes(document.documentElement.lang) 
+                    ["za", "la"].includes(document.documentElement.lang) 
                     ? t("radical_group") + " " + radicalData.name_trans 
                     : radicalData.name_trans + " " + t("radical_group")
                 );
