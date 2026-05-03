@@ -144,5 +144,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    setLanguage('zh-CN');
+    setLanguage(document.getElementById('lang-selector').value);
 });
