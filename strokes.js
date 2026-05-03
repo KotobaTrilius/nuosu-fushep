@@ -517,7 +517,7 @@ const charStrokes = {
     "ꄿ": ['TI', 'K1'],
     "ꅀ": ['N1', 'TI', '-'],
     "ꅁ": ['-', '|', 'O1', 'A'],
-    "ꅂ": ['-', '|'],
+    "ꅂ": ['-', '|', 'O1'],
     "ꅃ": ['-', '|', 'K2'],
     "ꅄ": ['F', 'U1', '3R3'],
     "ꅅ": ['U1', 'T1', '3R3', 'A'],
@@ -1520,7 +1520,7 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
         });
     }
 
-    const ret = [];
+    let ret = [];
 
     const prevChar = getPrevChar();
 
@@ -1600,10 +1600,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addStroke(stroke) {
-        let strokeArray = currentStrokes.split('');
-        strokeArray.push(stroke);
-        strokeArray.sort();
-        currentStrokes = strokeArray.join('');
+        currentStrokes += stroke;
+
+        updateStrokeUI();
+        filterCharsByStrokes();
+    }
+
+    function deleteStroke() {
+        currentStrokes = currentStrokes.slice(0, currentStrokes.length - 1);
 
         updateStrokeUI();
         filterCharsByStrokes();
@@ -1656,6 +1660,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function flushSingleChar(index) {
+        const elements = strokeCharContainer.querySelectorAll('.exact-match');
+        if (index in elements) {
+            insertAtCursor(editor, elements[index].textContent);
+            editor.blur();
+            clearStrokes();
+        }
+    }
+
     document.addEventListener('keydown', (e) => {
         if (!document.getElementById('panel-stroke').classList.contains('active')) return;
         if (e.ctrlKey || e.altKey || e.metaKey) return;
@@ -1666,7 +1679,18 @@ document.addEventListener('DOMContentLoaded', () => {
             addStroke(key);
         } else if (e.key === 'Escape') {
             clearStrokes();
-        }
+        } else if (!window.editor.hasFocus) {
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                deleteStroke();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                flushSingleChar(0);
+            } else if (e.key >= '1' && e.key <= '9') {
+                e.preventDefault();
+                flushSingleChar(e.key - 1);
+            }
+        } 
     });
 
     clearStrokeBtn.addEventListener('click', clearStrokes);
