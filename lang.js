@@ -256,6 +256,7 @@ const translations = {
         pinyin_input_title: "로마자 입력",
         pinyin_placeholder: "로마자 표기 입력:",
         pinyin_clear_btn: "지우기 (Esc)",
+        pinyin_submit_btn: "변환 (Enter)",
         pinyin_match_title: "일치하는 문자",
         pinyin_hint: "문자를 필터링하려면 로마자 표기를 입력하세요 (접두사 일치)",
         pinyin_no_match: "일치하는 문자를 찾을 수 없습니다",
@@ -308,8 +309,9 @@ const translations = {
 
         tab_pinyin: "ꃚꁆꁱꂷꎹꏦ",
         pinyin_input_title: "ꃚꁆꁱꂷꁱ",
-        pinyin_placeholder: "输入拉丁转写：",
+        pinyin_placeholder: "ꃚꁆꁱꂷꁱ：",
         pinyin_clear_btn: "ꌩꎳꇫꎭ (Esc)",
+        pinyin_submit_btn: "ꄜꏮ (Enter)",
         pinyin_match_title: "匹配字符",
         pinyin_hint: "输入拉丁转写以筛选字符（从前侧匹配）",
         pinyin_no_match: "未找到匹配字符",
@@ -327,7 +329,7 @@ const translations = {
         copy_error: "复制错误",
         copy_error_alert: "复制错误。"
     },
-    "za": {
+    za: {
         subtitle: "Hongdawz Rasaw Sanraiz Sawyizcuz Gveihfan Liengzsanh",
         star_me: "Youq GitHub hawj aen hanghmoeg neix aen sing ndeu nw →",
         editor_placeholder: "Youq gizneix coqhaeuj roxnaeuz mbaenq gij anniuj baihlaj daeuj caphaeuj cihsaw...",
@@ -364,6 +366,7 @@ const translations = {
         pinyin_input_title: "Coqhaeuj bingqyaem",
         pinyin_placeholder: "Coqhaeuj bingqyaem:",
         pinyin_clear_btn: "Cawzseuq (Esc)",
+        pinyin_submit_btn: "Daezgyau (Enter)",
         pinyin_match_title: "Cihsaw doxboiq",
         pinyin_hint: "Coqhaeuj bingqyaem daeuj raenggenj cihsaw (daj hainduj doxboiq)",
         pinyin_no_match: "Caengz ra raen cihsaw doxboiq",
@@ -380,6 +383,61 @@ const translations = {
         copy_empty: "Aen gvaengh sijsaw neix hoengq, mbouj fukceiq ndaej.",
         copy_error: "Fukceiq okloek",
         copy_error_alert: "Fukceiq okloek."
+    },
+    la: {
+        subtitle: "Scriptorium & Quaesitorium Scripta Syllabaria Nuosu",
+        star_me: "Da stellam, amabo te, huic opusculo in GitHub →",
+        editor_placeholder: "Hîc scribe vel preme bullas infra ad litteras inserendas...",
+        copy_btn: "📋 Litteras duplicare",
+        copied: "✅ Prospere",
+        info_default: "Pone cursorem apud litteram ut res ejus legas",
+        tab_radical: "Pro Radice",
+        tab_stroke: "Pro Tractu",
+        trans_label: "Transliteratio: ",
+        
+        radical_select_title: "Elige radicem",
+        radical_char: "Radix litterae",
+        radical_chars: "Radices ipsae",
+        radical_group: "Genus",
+        radical_list_title: "Litterae",
+        radical_no_selection: "Nulla electa",
+        radical_empty: "Nulla littera in hac radice",
+        radical_stroke_0: "0 tractus",
+        radical_stroke_1: "1 tractus",
+        radical_stroke_2: "2 tractûs",
+        radical_stroke_3: "3 tractûs",
+        radical_stroke_4: "4 tractûs",
+        radical_stroke_5: "5 tractûs sive plures",
+        
+        stroke_input_title: "Scribe tractûs",
+        stroke_clear_btn: "Purgare (Esc)",
+        stroke_keyboard_title: "Claviatura Tractuum",
+        stroke_match_title: "Litterae Aptae",
+        stroke_count_suffix: " littera(e) apta(e)",
+        stroke_hint: "Scribe tractûs ut litterae percolentur",
+        stroke_no_match: "Nulla apta",
+
+        tab_pinyin: "Pro Transliteratione",
+        pinyin_input_title: "Scribe transliterationem",
+        pinyin_placeholder: "Scribe transliterationem: ",
+        pinyin_clear_btn: "Purgare (Esc)",
+        pinyin_submit_btn: "Efferre (Enter)",
+        pinyin_match_title: "Litterae Aptae",
+        pinyin_hint: "Scribe transliterationem ut litterae percolentur (de principio)",
+        pinyin_no_match: "Nulla apta",
+        punctuation_mark: "Interpunctum",
+        
+        info_char: "Littera",
+        info_pinyin: "Transliteratio",
+        info_strokes: "Tractus",
+        info_ipa: "IPA",
+        info_none: "Nihil",
+        iteration_mark: "Duplicatio syllabae",
+
+        load_error: "Systema male lectum est",
+        copy_empty: "Nihil duplicandum est.",
+        copy_error: "Male cessit",
+        copy_error_alert: "Male cessit."
     }
 };
 let currentLang = 'zh-CN'; 
