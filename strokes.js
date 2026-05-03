@@ -1499,7 +1499,7 @@ Object.entries(charStrokesExpanded).forEach(([char, countObjs]) => {
  * @param {string[]} strokes
  * @returns {[string, bool][]}
  */
-function resolveCharsFromStrokes(strokes) {
+function resolveCharsFromStrokes(strokes, getPrevChar) {
     const countObj = arrToCountObj(strokes);
 
     const sets = Object.entries(countObj)
@@ -1572,16 +1572,6 @@ function resolveCharsFromStrokes(strokes) {
     return ret;
 }
 
-function getPrevChar() {
-    const textarea = window.editor;
-    if (!textarea) return null;
-
-    const cursorPos = textarea.selectionStart;
-    if (cursorPos === 0) return '\n';
-
-    return textarea.value[cursorPos - 1];
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof charInfo === 'undefined') {
         alert(t('load_error'));
@@ -1646,7 +1636,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const inputStrokes = currentStrokes;
-        const matchedChars = resolveCharsFromStrokes(currentStrokes);
+        const matchedChars = resolveCharsFromStrokes(currentStrokes, () => {
+            const textarea = window.editor;
+            if (!textarea) return null;
+
+            const cursorPos = textarea.selectionStart;
+            if (cursorPos === 0) return '\n';
+
+            return textarea.value[cursorPos - 1];
+        });
 
         matchCountLabel.textContent = matchedChars.length;
 
