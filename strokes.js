@@ -1669,23 +1669,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    editor.addEventListener('selectionchange', filterCharsByStrokes);
+
     document.addEventListener('keydown', (e) => {
         if (!document.getElementById('panel-stroke').classList.contains('active')) return;
         if (e.ctrlKey || e.altKey || e.metaKey) return;
 
         const key = e.key.toUpperCase();
-        if (inputtableStrokes.has(key)) {
-            e.preventDefault();
-            addStroke(key);
-        } else if (e.key === 'Escape') {
+        if (e.key === 'Escape') {
             clearStrokes();
-        } else if (!window.editor.hasFocus) {
+        } else if (document.activeElement != editor) {
+            console.log(document.activeElement);
             if (e.key === 'Backspace') {
                 e.preventDefault();
                 deleteStroke();
             } else if (e.key === 'Enter') {
                 e.preventDefault();
                 flushSingleChar(0);
+            } else if (inputtableStrokes.has(key)) {
+                e.preventDefault();
+                addStroke(key);
             } else if (e.key >= '1' && e.key <= '9') {
                 e.preventDefault();
                 flushSingleChar(e.key - 1);
