@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
         groups.forEach(group => {
             const strokeCount = group[0];
             const syllableList = group[1];
-            console.log(syllableList)
+            // console.log(syllableList)
             
             if (!syllableList || syllableList.length === 0) return;
             

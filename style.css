@@ -67,6 +67,8 @@
 
   --font-ui: var(--res-font-sans);
   --font-input: var(--font-ui);
+
+  --current-editor-font: var(--res-font-yi);
 }
 
 :lang(zh), :lang(zh-CN) { --font-ui: var(--res-font-zh-cn); }
@@ -204,7 +206,7 @@ button, input, select, textarea {
   resize: vertical;
   border-width: 1px;
   border-color: var(--color-border-input);
-  font-family: var(--font-ui);
+  font-family: var(--current-editor-font);
 }
 .pinyin-input-box { 
   margin-bottom: var(--space-3);

@@ -15,7 +15,7 @@
                 <div class="title-group">
                     <h2><span class="yi-logo">ꃚꎹ</span><span class="title-latin"> | FUSHEP</span></h2>
                     <span class="subtitle" data-i18n="subtitle">凉山规范彝文检字编辑器</span>
-                    <span class="subtitle">v0.1.8</span>
+                    <span class="subtitle">v0.1.9</span>
                 </div>
                 <div class="header-controls">
                     <div class="controls-row-top">
@@ -45,9 +45,17 @@
                             </a>
                         </div>
                     </div>
+
+                    <div class="controls-row-top">
+                        <label for="editor-font-select" class="subtitle" data-i18n="editor_font_select"></label>
+                        <select id="editor-font-select" class="font-select-btn">
+                            <option value="--font-yi-sans" data-i18n="editor_font_sans"></option>
+                            <option value="--font-yi-cursive" data-i18n="editor_font_cursive"></option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <textarea id="editor" data-i18n="editor_placeholder" placeholder="在此处输入或点击下方按钮插入字符..."></textarea>
+            <textarea id="editor" data-i18n="editor_placeholder"></textarea>
             <div id="transliteration-display" class="transliteration-box">
                 <span class="trans-label" data-i18n="trans_label">拼音转写:</span> 
                 <span id="trans-content"></span>

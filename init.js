@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.copyBtn = document.getElementById('copy-btn');
     window.transContent = document.getElementById('trans-content');
 
+    const fontSelect = document.getElementById('editor-font-select');
+
     infoDisplay.textContent = t('info_default');
     infoDisplay.dataset.i18n = 'info_default';
 
@@ -87,6 +89,24 @@ document.addEventListener('DOMContentLoaded', () => {
             ${ipaPart}
         `;
         // | <strong>${t('info_strokes')}:</strong> ${formattedStrokes}
+    };
+
+    if (fontSelect) {
+        fontSelect.addEventListener('change', (e) => {
+            const selectedFontVar = e.target.value;
+
+            const fontMap = {
+                '--font-yi-sans':
+                    'var(--res-font-yi)',
+                '--font-yi-cursive':
+                    'var(--res-font-yi-cursive)'
+            };
+            
+            document.documentElement.style.setProperty(
+                '--current-editor-font', 
+                fontMap[selectedFontVar]
+            );
+        });
     };
 
     function updateTransliteration() {

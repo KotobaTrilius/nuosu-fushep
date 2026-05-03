@@ -5,7 +5,7 @@
 # Nuosu FUSHEP
 ꃚꎹ / FUSHEP (pronounced /fū.ʂɤ̂/, _foo-SHUR_), a Nuosu Yi Syllabary Character Finder &amp; Editor
 
-Version: 0.1.8
+Version: 0.1.9
 
 # Introduction
 The **Yi Syllabary**, also known as the **Liangshan Standard Yi Script**, serves as the official orthography for the **Nuosu language** (classified as Northern Yi in China). Endorsed by the Chinese State Council, it is the sole standardized Yi script with national recognition.
