@@ -1519,17 +1519,16 @@ function resolveCharsFromStrokes(strokes) {
             if (Object.keys(expansion).length < Object.keys(countObj).length)
                 continue;
 
-            let expansionMatch = Object.keys(countObj)
+            const expansionMatch = Object.keys(countObj)
                 .every(key => key in expansion && expansion[key] >= countObj[key]);
-            let editDistance = expansionMatch
-                ? Object.entries(expansion)
-                    .map(([key, value]) => value - countObj[key])
-                    .reduce((total, current) => total + current)
-                : Infinity;
 
-            match = match || expansionMatch;
-
-            if (editDistance < minEditDistance) minEditDistance = editDistance;
+            if (expansionMatch) {
+                const editDistance = Object.entries(expansion)
+                    .map(([key, value]) => value - (countObj[key] || 0))
+                    .reduce((total, current) => total + current);
+                match = expansionMatch;
+                if (editDistance < minEditDistance || minEditDistance === Infinity) minEditDistance = editDistance;
+            }
         }
 
         if (match) ret.push([candidate, minEditDistance]);
@@ -1546,6 +1545,8 @@ function resolveCharsFromStrokes(strokes) {
             const delta = a.elem[1] - b.elem[1];
             return delta === 0 ? b.prob - a.prob : delta;
         });
+
+        console.log(withProbs);
 
         const sortedRet = withProbs.map(item => item.elem).map(([char, ed]) => [char, ed === 0]);
 
