@@ -1276,33 +1276,33 @@ const charStrokes = {
     "ꐶ": ['N1', 'O1', '2R3', 'A'],
     "ꐷ": ['N1', 'O1', '2R3'],
     "ꐸ": ['O1', 'T1', '2R3', 'U1'],
-    "ꐹ": ['HFF', 'ET2','A'],
-    "ꐺ": ['HFF','ET2'],
-    "ꐻ": ['B1','3R3'],
-    "ꐼ": ['B1','EL2','A'],
-    "ꐽ": ['B1','EL2'],
-    "ꐾ": ['D1','C1','N1'],
-    "ꐿ": ['C1','-','2R3','A'],
-    "ꑀ": ['C1','-','2R3'],
-    "ꑁ": ['C1','-','D1'],
-    "ꑂ": ['TM','/','A'],
-    "ꑃ": ['TM','/','A'],
-    "ꑄ": ['S','O1','|'],
-    "ꑅ": ['X','N1','A'],
-    "ꑆ": ['X','N1'],
-    "ꑇ": ['Z1','2R3'],
-    "ꑈ": ['M1','J1','\\','A'],
-    "ꑉ": ['M1','J1','\\'],
-    "ꑊ": ['U1','A','N1'],
-    "ꑋ": ['TF','2-','A'],
-    "ꑌ": ['TF','2-'],
-    "ꑍ": ['F','R3'],
-    "ꑎ": ['D1','C1','-','U1','A'],
-    "ꑏ": ['J1','-','C1','A','A'],
-    "ꑐ": ['J1','-','C1','A'],
-    "ꑑ": ['D1','C1','-','2R3'],
-    "ꑒ": ['O1','R3','-','/','-','A'],
-    "ꑓ": ['O1','R3','-','/','-'],
+    "ꐹ": ['HFF', 'ET2', 'A'],
+    "ꐺ": ['HFF', 'ET2'],
+    "ꐻ": ['B1', '3R3'],
+    "ꐼ": ['B1', 'EL2', 'A'],
+    "ꐽ": ['B1', 'EL2'],
+    "ꐾ": ['D1', 'C1', 'N1'],
+    "ꐿ": ['C1', '-', '2R3', 'A'],
+    "ꑀ": ['C1', '-', '2R3'],
+    "ꑁ": ['C1', '-', 'D1'],
+    "ꑂ": ['TM', '/', 'A'],
+    "ꑃ": ['TM', '/', 'A'],
+    "ꑄ": ['S', 'O1', '|'],
+    "ꑅ": ['X', 'N1', 'A'],
+    "ꑆ": ['X', 'N1'],
+    "ꑇ": ['Z1', '2R3'],
+    "ꑈ": ['M1', 'J1', '\\', 'A'],
+    "ꑉ": ['M1', 'J1', '\\'],
+    "ꑊ": ['U1', 'A', 'N1'],
+    "ꑋ": ['TF', '2-', 'A'],
+    "ꑌ": ['TF', '2-'],
+    "ꑍ": ['F', 'R3'],
+    "ꑎ": ['D1', 'C1', '-', 'U1', 'A'],
+    "ꑏ": ['J1', '-', 'C1', 'A', 'A'],
+    "ꑐ": ['J1', '-', 'C1', 'A'],
+    "ꑑ": ['D1', 'C1', '-', '2R3'],
+    "ꑒ": ['O1', 'R3', '-', '/', '-', 'A'],
+    "ꑓ": ['O1', 'R3', '-', '/', '-'],
     "ꑔ": ['2U1', 'TH'],
     "ꑕ": ['D1', 'C1', '|'],
     "ꑖ": ['2N1', 'Z1', 'A'],
@@ -1498,9 +1498,10 @@ Object.entries(charStrokesExpanded).forEach(([char, countObjs]) => {
  * 
  * @param {string[]} strokes
  * @param {function(): string} getPrevChar
+ * @param {function(): string} getPrevPrevChar
  * @returns {[string, bool][]}
  */
-function resolveCharsFromStrokes(strokes, getPrevChar) {
+function resolveCharsFromStrokes(strokes, getPrevChar, getPrevPrevChar) {
     const countObj = arrToCountObj(strokes);
 
     const sets = Object.entries(countObj)
@@ -1523,6 +1524,7 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
     let ret = [];
 
     const prevChar = getPrevChar();
+    const prevPrevChar = getPrevPrevChar ? getPrevPrevChar() : undefined;
 
     for (const candidate of candidates) {
         const expansions = charStrokesExpanded[candidate];
@@ -1551,7 +1553,7 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
     if (prevChar !== undefined && compress(prevChar) !== undefined && ret.length > 0) {
         const withProbs = ret.map(elem => {
             const compressed = compress(elem[0]);
-            const prob = compressed !== undefined ? getProb(prevChar, elem[0]) : 0;
+            const prob = compressed !== undefined ? getProb(prevChar, elem[0], prevPrevChar) : 0;
             return { elem, prob };
         });
 
@@ -1646,6 +1648,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cursorPos === 0) return '\n';
 
             return textarea.value[cursorPos - 1];
+        }, () => {
+            const textarea = window.editor;
+            if (!textarea) return null;
+
+            const cursorPos = textarea.selectionStart;
+            if (cursorPos <= 1) return '\n';
+
+            return textarea.value[cursorPos - 2];
         });
 
         matchCountLabel.textContent = matchedChars.length;
@@ -1693,7 +1703,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 flushSingleChar(e.key - 1);
             }
-        } 
+        }
     });
 
     clearStrokeBtn.addEventListener('click', clearStrokes);
