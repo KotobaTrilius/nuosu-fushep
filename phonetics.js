@@ -52,9 +52,9 @@ const finals = {
     "u": "u",
     "ur": "u̙",
     "o": "o",
-    "ie": "ɛ",
-    "uo": "ɔ",
-    "a": "ɒ"
+    "ie": "ɛ̙",
+    "uo": "ɔ̙",
+    "a": "a̙"
 }
 
 const tones = {
