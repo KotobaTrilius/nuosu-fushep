@@ -41,7 +41,8 @@ const initials = {
     "y": "ʑ",
     "h": "x",
     "w": "ɣ",
-    "hx": "h"
+    "hx": "h",
+    "": ""
 }
 
 const finals = {
@@ -66,31 +67,33 @@ const tones = {
 
 function toIPA(pinyin) {
     let remaining = pinyin;
-    let initialIPA = "";
-    let finalIPA = "";
-    let toneMark = tones[""];
+    let initial = "";
+    let final = "";
+    let toneMark = "";
 
-    const lastChar = remaining.slice(-1);
-    if (["t", "x", "p"].includes(lastChar)) {
-        toneMark = tones[lastChar];
+    if (["t", "x", "p"].includes(remaining.slice(-1))) {
+        toneMark = remaining.slice(-1);
         remaining = remaining.slice(0, -1);
     }
 
-    const initialKeys = Object.keys(initials).sort((a, b) => b.length - a.length);
-    for (const key of initialKeys) {
+    for (const key of Object.keys(initials).sort((a, b) => b.length - a.length)) {
         if (remaining.startsWith(key)) {
-            initialIPA = initials[key];
+            initial = key;
             remaining = remaining.slice(key.length);
             break;
         }
     }
 
     if (finals[remaining]) {
-        finalIPA = finals[remaining];
+        final = remaining;
     } else {
         console.warn(`Unknown final: "${remaining}" in syllable "${pinyin}"`);
         return null;
     }
 
-    return initialIPA + finalIPA + toneMark;
+    if (toneMark == "t" && ["u", "y"].includes(final)) {
+        final = final + "r";
+    }
+
+    return initials[initial] + finals[final] + tones[toneMark];
 }
