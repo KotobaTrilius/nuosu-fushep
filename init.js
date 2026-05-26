@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var v = window.visualViewport;
             if (v) {
                 document.documentElement.style.setProperty('--app-height', v.height + 'px');
+                window.scrollTo(0, 0);
             } else {
                 document.documentElement.style.setProperty('--app-height', window.innerHeight + 'px');
             }
