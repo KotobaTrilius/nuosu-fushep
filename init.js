@@ -119,22 +119,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    (function fixViewportHeight() {
-        var prevH = 0;
-        function updateHeight() {
+    (function syncVpHeight() {
+        function sync() {
             var v = window.visualViewport;
-            var h = v ? v.height : window.innerHeight;
-            document.documentElement.style.height = h + 'px';
-            if (v && h > prevH) {
+            if (v) {
+                document.documentElement.style.height = v.height + 'px';
                 window.scrollTo(0, 0);
             }
-            prevH = h;
         }
         if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', updateHeight);
+            window.visualViewport.addEventListener('resize', sync);
         }
-        window.addEventListener('resize', updateHeight);
-        updateHeight();
+        var el = document.getElementById('editor');
+        if (el) {
+            el.addEventListener('blur', sync);
+        }
     })();
 
     window.editor = document.getElementById('editor');
