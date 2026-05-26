@@ -119,6 +119,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    (function fixViewportHeight() {
+        function updateHeight() {
+            var v = window.visualViewport;
+            if (v) {
+                document.documentElement.style.setProperty('--app-height', v.height + 'px');
+            } else {
+                document.documentElement.style.setProperty('--app-height', window.innerHeight + 'px');
+            }
+        }
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', updateHeight);
+            window.visualViewport.addEventListener('scroll', updateHeight);
+        }
+        window.addEventListener('resize', updateHeight);
+        updateHeight();
+    })();
+
     window.editor = document.getElementById('editor');
     window.infoDisplay = document.getElementById('info-display');
     window.copyBtn = document.getElementById('copy-btn');
