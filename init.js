@@ -120,18 +120,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     (function fixViewportHeight() {
+        var prevH = 0;
         function updateHeight() {
             var v = window.visualViewport;
-            if (v) {
-                document.documentElement.style.setProperty('--app-height', v.height + 'px');
+            var h = v ? v.height : window.innerHeight;
+            document.documentElement.style.height = h + 'px';
+            if (v && h > prevH) {
                 window.scrollTo(0, 0);
-            } else {
-                document.documentElement.style.setProperty('--app-height', window.innerHeight + 'px');
             }
+            prevH = h;
         }
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', updateHeight);
-            window.visualViewport.addEventListener('scroll', updateHeight);
         }
         window.addEventListener('resize', updateHeight);
         updateHeight();
