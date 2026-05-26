@@ -938,6 +938,7 @@ button, select {
   font-size: var(--font-small);
 }
 #kbd-toggle {
+  display: none;
   font-size: var(--font-small);
 }
 #kbd-toggle.kbd-toggle-active {
@@ -960,6 +961,10 @@ button, select {
   .input-actions {
     padding-left: var(--space-normal);
     padding-right: var(--space-normal);
+  }
+
+  #kbd-toggle {
+    display: inline-flex;
   }
 }
 
