@@ -133,17 +133,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var kbdBtn = document.getElementById('kbd-toggle');
     if (kbdBtn) {
-        if (editor.getAttribute('inputmode') === 'none') kbdBtn.classList.add('kbd-toggle-active');
+        function syncKbd() {
+            kbdBtn.classList.toggle('kbd-toggle-active', editor.getAttribute('inputmode') === 'none');
+        }
+        syncKbd();
         kbdBtn.addEventListener('click', function () {
-            var off = editor.getAttribute('inputmode') === 'none';
-            if (off) {
+            if (editor.getAttribute('inputmode') === 'none') {
                 editor.removeAttribute('inputmode');
-                kbdBtn.classList.remove('kbd-toggle-active');
-                if (isMobile() && document.activeElement !== editor) editor.focus();
             } else {
                 editor.setAttribute('inputmode', 'none');
-                kbdBtn.classList.add('kbd-toggle-active');
             }
+            syncKbd();
         });
     }
 
