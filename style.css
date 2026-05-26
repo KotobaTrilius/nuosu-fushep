@@ -295,7 +295,8 @@ button, select {
 }
 
 .kbd-toggle-active {
-  opacity: 0.4;
+  background-color: var(--c-bone-deep);
+  color: var(--c-neutral-fade);
 }
 
 /* --- Select --- */
