@@ -859,8 +859,8 @@ button, select {
     display: none;
   }
 
-  #dict-btn {
-    margin-left: auto;
+  .stroke-label-text {
+    margin-left: 0.25rem;
   }
 
   .input-controls {
@@ -937,6 +937,32 @@ button, select {
 #dict-btn {
   font-size: var(--font-small);
 }
+#kbd-toggle {
+  font-size: var(--font-small);
+}
+#kbd-toggle.kbd-toggle-active {
+  background-color: var(--c-brand-ink);
+  color: #fff;
+  border-color: var(--c-brand-ink);
+}
+#kbd-toggle:not(.kbd-toggle-active) {
+  background-color: transparent;
+  color: var(--c-neutral-fade);
+  border-color: var(--c-neutral-stain);
+}
+@media (max-width: 480px) {
+  .transliteration-bar,
+  .status-bar {
+    padding-left: var(--space-normal);
+    padding-right: var(--space-normal);
+  }
+
+  .input-actions {
+    padding-left: var(--space-normal);
+    padding-right: var(--space-normal);
+  }
+}
+
 .ipa { 
   font-family: var(--font-ipa);
   font-size: 105%; 

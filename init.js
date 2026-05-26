@@ -131,6 +131,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fontSelect = document.getElementById('editor-font-select');
 
+    var kbdBtn = document.getElementById('kbd-toggle');
+    var inputCtrls = document.querySelector('.input-controls');
+    var candidateBar = document.getElementById('candidate-bar');
+    if (kbdBtn) {
+        function syncKbd() {
+            var off = editor.getAttribute('inputmode') === 'none';
+            kbdBtn.classList.toggle('kbd-toggle-active', off);
+            if (inputCtrls) inputCtrls.classList.toggle('hidden', !off);
+            if (candidateBar) candidateBar.classList.toggle('hidden', !off);
+        }
+        syncKbd();
+        kbdBtn.addEventListener('click', function () {
+            if (editor.getAttribute('inputmode') === 'none') editor.removeAttribute('inputmode');
+            else editor.setAttribute('inputmode', 'none');
+            syncKbd();
+            if (isMobile()) {
+                if (editor.getAttribute('inputmode') === 'none') editor.blur();
+                else { editor.focus(); editor.selectionStart = editor.selectionEnd = editor.value.length; }
+            }
+        });
+    }
+
     editor.addEventListener('focus', () => {
         requestAnimationFrame(() => { savedPos = editor.selectionStart; });
     });
