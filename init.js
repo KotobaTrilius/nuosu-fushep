@@ -133,22 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var kbdBtn = document.getElementById('kbd-toggle');
     if (kbdBtn) {
-        var kbdEnabled = localStorage.getItem('kbd-enabled') !== 'false';
-        if (!kbdEnabled) {
-            editor.setAttribute('inputmode', 'none');
-            kbdBtn.classList.add('kbd-toggle-active');
+        var kbdLabel = kbdBtn.querySelector('span');
+        function updateKbdBtn() {
+            var on = localStorage.getItem('kbd-enabled') !== 'false';
+            kbdLabel.textContent = t(on ? 'kbd_disable_btn' : 'kbd_enable_btn');
+            kbdBtn.classList.toggle('kbd-toggle-active', !on);
+            if (!on) editor.setAttribute('inputmode', 'none');
+            else editor.removeAttribute('inputmode');
         }
+        updateKbdBtn();
         kbdBtn.addEventListener('click', function () {
             var on = localStorage.getItem('kbd-enabled') !== 'false';
-            if (on) {
-                editor.setAttribute('inputmode', 'none');
-                localStorage.setItem('kbd-enabled', 'false');
-                kbdBtn.classList.add('kbd-toggle-active');
-            } else {
-                editor.removeAttribute('inputmode');
-                localStorage.setItem('kbd-enabled', 'true');
-                kbdBtn.classList.remove('kbd-toggle-active');
-            }
+            localStorage.setItem('kbd-enabled', on ? 'false' : 'true');
+            updateKbdBtn();
         });
     }
 
