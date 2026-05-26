@@ -131,22 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fontSelect = document.getElementById('editor-font-select');
 
-    var kbdBtn = document.getElementById('kbd-toggle');
-    if (kbdBtn) {
-        function syncKbd() {
-            kbdBtn.classList.toggle('kbd-toggle-active', editor.getAttribute('inputmode') === 'none');
-        }
-        syncKbd();
-        kbdBtn.addEventListener('click', function () {
-            if (editor.getAttribute('inputmode') === 'none') {
-                editor.removeAttribute('inputmode');
-            } else {
-                editor.setAttribute('inputmode', 'none');
-            }
-            syncKbd();
-        });
-    }
-
     editor.addEventListener('focus', () => {
         requestAnimationFrame(() => { savedPos = editor.selectionStart; });
     });

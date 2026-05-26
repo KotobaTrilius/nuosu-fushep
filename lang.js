@@ -70,8 +70,6 @@ const translations = {
         switch_view: "检视",
         candidate_expand: "展开\n全部",
         candidate_collapse: "收起",
-        kbd_enable_btn: "启用系统键盘",
-        kbd_disable_btn: "禁用系统键盘"
     },
     "zh-TW": {
         subtitle: "涼山規範彝文檢字編輯器",
@@ -140,8 +138,6 @@ const translations = {
         switch_view: "檢視",
         candidate_expand: "展開\n全部",
         candidate_collapse: "收起",
-        kbd_enable_btn: "啟用系統鍵盤",
-        kbd_disable_btn: "禁用系統鍵盤"
     },
     en: {
         subtitle: "Nuosu Yi Syllabary Character Finder & Editor",
@@ -214,8 +210,6 @@ const translations = {
         switch_view: "Inspect",
         candidate_expand: "Show all",
         candidate_collapse: "Collapse",
-        kbd_enable_btn: "Enable Keyboard",
-        kbd_disable_btn: "Disable Keyboard"
     },
     ja: {
         subtitle: "フシュ — 涼山規範彝（イ）文字検索・編集ツール",

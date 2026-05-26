@@ -294,10 +294,6 @@ button, select {
   background-color: var(--c-bone-deep);
 }
 
-.kbd-toggle-active {
-  background-color: var(--c-bone-deep);
-  color: var(--c-neutral-fade);
-}
 
 /* --- Select --- */
 .select {
