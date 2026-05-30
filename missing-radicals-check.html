@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>字符部首信息缺失检查</title>
+<style>
+body { font-family: -apple-system, 'Segoe UI', sans-serif; margin: 20px; background: #fafafa; }
+h1 { font-size: 20px; }
+.summary { margin: 12px 0; font-size: 15px; }
+table { border-collapse: collapse; width: 100%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+th, td { border: 1px solid #ddd; padding: 5px 10px; text-align: left; }
+th { background: #f5f5f5; position: sticky; top: 0; }
+.missing td { background: #fff5f5; }
+.char { font-size: 22px; font-family: 'Nuosu SIL', 'Segoe UI', sans-serif; }
+.ok { color: #090; font-weight: bold; }
+.fail { color: #c00; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>字符部首信息缺失检查</h1>
+<p>逐一遍历 <code>charInfo</code> 中的非部首字符，检查其音节是否出现在 <code>radicalMap</code> 的 <code>syllables</code> 列表中。</p>
+
+<div id="summary" class="summary">加载中...</div>
+<table>
+<thead><tr><th>#</th><th>字符</th><th>Unicode</th><th>音节</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+
+<script src="data_chars.js"></script>
+<script src="data_radicals.js"></script>
+<script>
+(function() {
+    // Collect all syllables from radicalMap
+    const radicalSyllables = new Set();
+    for (const entry of Object.values(radicalMap)) {
+        for (const [tone, syllables] of entry.syllables) {
+            for (const syl of syllables) {
+                radicalSyllables.add(syl);
+            }
+        }
+    }
+
+    const punct = new Set(['，','。','：','；','、','？','！','……','——','·','￥','（','）','【','】','《','》','"',"'",'”','’','“','‘']);
+    const missing = [];
+    const ok = [];
+
+    for (const [char, syl] of Object.entries(charInfo)) {
+        if (syl.endsWith('=')) continue;
+        if (punct.has(char)) continue;
+        if (radicalSyllables.has(syl)) {
+            ok.push(char);
+        } else {
+            missing.push({ char, syl, cp: char.codePointAt(0).toString(16).toUpperCase() });
+        }
+    }
+
+    const tbody = document.getElementById('tbody');
+    const summary = document.getElementById('summary');
+
+    if (missing.length === 0) {
+        summary.innerHTML = '<span class="ok">✅ 所有 ' + ok.length + ' 个字符均有部首信息。</span>';
+    } else {
+        summary.innerHTML = '<span class="fail">❌ 共 ' + missing.length + ' / ' + (ok.length + missing.length) + ' 个字符缺少部首信息</span>';
+        missing.forEach((item, i) => {
+            const tr = document.createElement('tr');
+            tr.className = 'missing';
+            tr.innerHTML = '<td>' + (i + 1) + '</td><td class="char">' + item.char + '</td><td>U+' + item.cp + '</td><td>' + item.syl + '</td>';
+            tbody.appendChild(tr);
+        });
+    }
+})();
+</script>
+</body>
+</html>
