@@ -64,11 +64,7 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
             return delta === 0 ? b.prob - a.prob : delta;
         });
 
-        console.log(withProbs);
-
         ret = withProbs.map(item => item.elem).map(([char, ed]) => [char, ed === 0]);
-    } else if (ret.length > 0) {
-        console.log('Skipping probability sort (prevChar undefined or compress(prevChar) undefined)');
     }
 
     return ret;

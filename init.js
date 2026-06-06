@@ -1,6 +1,5 @@
 function charFromBtn(btn) {
-  const glyph = btn.querySelector('.char-glyph');
-  return glyph ? glyph.textContent : btn.textContent;
+  return btn.dataset.char || (btn.querySelector('.char-glyph') || btn).textContent;
 }
 
 function isMobile() {
@@ -45,69 +44,33 @@ function insertAtCursor(myField, myValue) {
 }
 
 function createCharButton(char, exact = false, extra = null) {
-    const btn = document.createElement('button');
-    btn.className = exact ? 'char-btn exact-match' : 'char-btn';
-
+    const cls = exact ? 'char-btn exact-match' : 'char-btn';
     const pinyin = charInfo[char];
     const showLabels = pinyin && pinyin !== 'w' && !pinyin.endsWith('=');
-
+    let inner = '';
     if (extra) {
-        const extraSpan = document.createElement('span');
         if (extra.index !== undefined && extra.index < 9) {
-            extraSpan.className = 'char-index';
-            extraSpan.textContent = extra.index + 1;
+            inner += `<span class="char-index">${extra.index + 1}</span>`;
         } else if (extra.suffix) {
-            extraSpan.className = 'char-suffix';
-            extraSpan.textContent = extra.suffix;
+            inner += `<span class="char-suffix">${extra.suffix}</span>`;
         }
-        if (extraSpan.className) btn.appendChild(extraSpan);
     }
-
     if (showLabels) {
-        const pinyinSpan = document.createElement('span');
-        pinyinSpan.className = 'char-pinyin';
-        pinyinSpan.textContent = pinyin;
-        btn.appendChild(pinyinSpan);
+        inner += `<span class="char-pinyin">${pinyin}</span>`;
     }
-
-    const glyph = document.createElement('span');
-    glyph.className = 'char-glyph';
-    glyph.textContent = char;
-    btn.appendChild(glyph);
-
+    inner += `<span class="char-glyph">${char}</span>`;
     if (showLabels) {
         const ipa = toIPA(pinyin);
         if (ipa) {
-            const ipaSpan = document.createElement('span');
-            ipaSpan.className = 'char-ipa';
-            ipaSpan.textContent = `/${ipa["phonemic"]}/ [${ipa["phonetic"]}]`;
-            btn.appendChild(ipaSpan);
+            inner += `<span class="char-ipa">/${ipa.phonemic}/ [${ipa.phonetic}]</span>`;
         } else {
-            const ipaSpan = document.createElement('span');
-            ipaSpan.className = 'char-ipa';
-            ipaSpan.innerHTML = '&nbsp;';
-            btn.appendChild(ipaSpan);
+            inner += '<span class="char-ipa">&nbsp;</span>';
         }
     }
-
-    btn.addEventListener('click', () => {
-        if (currentImeMode === 'stroke' && typeof window.flushStrokeCandidate === 'function') {
-            window.flushStrokeCandidate(char);
-        } else {
-            insertAtCursor(editor, char);
-        }
-        const radicalPanel = btn.closest('.radical-panel');
-        if (radicalPanel) radicalPanel.classList.add('hidden');
-    });
-
-    btn.addEventListener('mouseenter', () => {
-        showInfo(char);
-    });
-
-    btn.addEventListener('mouseleave', () => {
-        infoDisplay.textContent = t('info_default');
-        infoDisplay.dataset.i18n = 'info_default';
-    });
+    const btn = document.createElement('button');
+    btn.className = cls;
+    btn.dataset.char = char;
+    btn.innerHTML = inner;
     return btn;
 }
 
@@ -334,6 +297,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (candidateToggle) {
         candidateToggle.addEventListener('click', () => {
+            if (pendingBatch) {
+                const fragment = document.createDocumentFragment();
+                pendingBatch.chars.forEach((item) => {
+                    const char = item[0];
+                    const exact = item[1];
+                    const suffix = item[2] || '';
+                    const btn = createCharButton(char, exact, suffix ? { suffix } : null);
+                    if (btn) fragment.appendChild(btn);
+                });
+                candidateScroll.appendChild(fragment);
+                pendingBatch = null;
+                candidateScroll.classList.add('expanded');
+                candidateToggle.textContent = t('candidate_collapse');
+                const editorArea = candidateScroll.closest('.editor-area');
+                if (editorArea) editorArea.classList.add('candidates-expanded');
+                return;
+            }
             const isExpanded = candidateScroll.classList.toggle('expanded');
             candidateToggle.textContent = t(isExpanded ? 'candidate_collapse' : 'candidate_expand');
             const editorArea = candidateScroll.closest('.editor-area');
@@ -456,9 +436,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setLanguage(document.getElementById('lang-selector').value);
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.char-btn');
+        if (!btn) return;
+        const char = btn.dataset.char;
+        if (!char) return;
+        if (currentImeMode === 'stroke' && typeof window.flushStrokeCandidate === 'function') {
+            window.flushStrokeCandidate(char);
+        } else {
+            insertAtCursor(editor, char);
+        }
+        const radicalPanel = btn.closest('.radical-panel');
+        if (radicalPanel) radicalPanel.classList.add('hidden');
+    });
+
+    let hoverTimer;
+    document.addEventListener('mouseover', (e) => {
+        const btn = e.target.closest('.char-btn');
+        if (!btn) return;
+        clearTimeout(hoverTimer);
+        showInfo(btn.dataset.char);
+    });
+    document.addEventListener('mouseout', (e) => {
+        const btn = e.target.closest('.char-btn');
+        if (!btn) return;
+        if (e.relatedTarget instanceof Node && btn.contains(e.relatedTarget)) return;
+        infoDisplay.textContent = t('info_default');
+        infoDisplay.dataset.i18n = 'info_default';
+    });
 });
 
+let pendingBatch = null;
+
 function clearCandidates() {
+    pendingBatch = null;
     if (candidateScroll) {
         var focused = document.activeElement;
         if (focused && candidateScroll.contains(focused)) focused.blur();
@@ -482,6 +494,15 @@ function showCandidates(chars) {
     const ph = candidateScroll.querySelector('.candidate-placeholder');
     if (ph) ph.classList.add('hidden');
     if (chars.length === 0) return;
+
+    if (isMobile() && chars.length > 50) {
+        pendingBatch = { chars: chars.slice(50) };
+        chars = chars.slice(0, 50);
+    } else {
+        pendingBatch = null;
+    }
+
+    const fragment = document.createDocumentFragment();
     chars.forEach((item, index) => {
         const char = item[0];
         const exact = item[1];
@@ -493,13 +514,21 @@ function showCandidates(chars) {
             extra = { suffix };
         }
         const btn = createCharButton(char, exact, extra);
-        if (btn) candidateScroll.appendChild(btn);
+        if (btn) fragment.appendChild(btn);
     });
+    candidateScroll.appendChild(fragment);
+
     if (!candidateToggle) return;
-    requestAnimationFrame(() => {
-        const hasOverflow = candidateScroll.scrollHeight > candidateScroll.clientHeight;
-        candidateToggle.style.display = hasOverflow ? 'block' : 'none';
-        candidateBar.classList.toggle('toggle-hidden', !hasOverflow);
+    if (pendingBatch) {
+        candidateToggle.style.display = 'block';
+        candidateBar.classList.remove('toggle-hidden');
         candidateToggle.textContent = t('candidate_expand');
-    });
+    } else {
+        requestAnimationFrame(() => {
+            const hasOverflow = candidateScroll.scrollHeight > candidateScroll.clientHeight;
+            candidateToggle.style.display = hasOverflow ? 'block' : 'none';
+            candidateBar.classList.toggle('toggle-hidden', !hasOverflow);
+            candidateToggle.textContent = t('candidate_expand');
+        });
+    }
 }

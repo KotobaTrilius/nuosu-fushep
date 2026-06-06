@@ -65,7 +65,10 @@ const tones = {
     "p": ["̂", "²¹"]
 }
 
+const toIPA_memo = new Map();
 function toIPA(pinyin) {
+    const cached = toIPA_memo.get(pinyin);
+    if (cached !== undefined) return cached;
     let remaining = pinyin;
     let initial = "";
     let final = "";
@@ -88,6 +91,7 @@ function toIPA(pinyin) {
         final = remaining;
     } else {
         console.warn(`Unknown final: "${remaining}" in syllable "${pinyin}"`);
+        toIPA_memo.set(pinyin, null);
         return null;
     }
 
@@ -153,8 +157,10 @@ function toIPA(pinyin) {
         phonetic_ipa["initial"] = initial_alt[final][initial]
     }
 
-    return {
+    const result = {
         phonemic: initials[initial][0] + finals[final][0] + tones[toneMark][0],
         phonetic: phonetic_ipa["initial"] + phonetic_ipa["final"] + phonetic_ipa["tone"]
-    }
+    };
+    toIPA_memo.set(pinyin, result);
+    return result;
 }
