@@ -393,9 +393,9 @@ button, select {
 /* ──────────────── Stroke Keyboard ──────────────── */
 .stroke-keyboard {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.125rem;
-  padding: var(--space-intimate) var(--space-loose);
+  padding: var(--space-intimate);
 }
 .stroke-keyboard.hidden {
   display: none;
@@ -420,25 +420,30 @@ button, select {
 .stroke-keyboard .stroke-key-btn:active {
   background-color: var(--c-bone-deep);
 }
-.toolbar-row.stroke-keyboard.hidden {
-  display: none;
+
+@media (max-width: 480px) {
+.stroke-keyboard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.125rem;
+  padding: var(--space-intimate);
 }
-.toolbar-row.stroke-keyboard .stroke-key-btn {
-  padding: var(--space-intimate) var(--space-normal);
+.stroke-keyboard.hidden { display: none; }
+.stroke-keyboard .stroke-key-btn {
+  padding: 0.375rem 0;
   border-radius: var(--radius-control);
   font-size: var(--font-small);
-  font-weight: bold;
   cursor: pointer;
   background-color: var(--c-bone-air);
   color: var(--c-neutral-ink);
   border: 1px solid var(--c-bone-ink);
-  transition: background-color 0.1s;
 }
-.toolbar-row.stroke-keyboard .stroke-key-btn:hover {
+.stroke-keyboard .stroke-key-btn:hover {
   background-color: var(--c-bone-weight);
 }
-.toolbar-row.stroke-keyboard .stroke-key-btn:active {
+.stroke-keyboard .stroke-key-btn:active {
   background-color: var(--c-bone-deep);
+}
 }
 
 .ime-extra {
@@ -770,32 +775,6 @@ button, select {
 }
 .pinyin-input-field::placeholder {
   color: var(--c-neutral-stain);
-}
-
-.stroke-keyboard {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.125rem;
-  padding: var(--space-intimate);
-}
-.stroke-keyboard.hidden { display: none; }
-.stroke-keyboard .stroke-key-btn {
-  padding: 0.375rem 0;
-  border-radius: var(--radius-control);
-  font-size: var(--font-small);
-  font-weight: bold;
-  cursor: pointer;
-  background-color: var(--c-bone-air);
-  color: var(--c-neutral-ink);
-  border: 1px solid var(--c-bone-ink);
-  text-align: center;
-  transition: background-color 0.1s;
-}
-.stroke-keyboard .stroke-key-btn:hover {
-  background-color: var(--c-bone-weight);
-}
-.stroke-keyboard .stroke-key-btn:active {
-  background-color: var(--c-bone-deep);
 }
 
 .input-actions {
