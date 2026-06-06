@@ -50,7 +50,7 @@ Code is organized into three conceptual layers, analogous to database / backend 
 
 ### `model/model.js` — Database + Backend
 - `const _PROBS_B64` — Base64-encoded trigram probability table (111,692 entries)
-- `function getProb(currentChar, nextChar)` — Looks up trigram probability of `nextChar` given `currentChar`
+- `function getModelScore(char, prevChar, prevPrevChar)` — Returns trigram (or bigram fallback) probability of `char` given context
 
 ### `init.js` — Frontend
 - DOM element references (`editor`, `candidateBar`, etc.) as `window.*` globals
@@ -89,7 +89,7 @@ data_chars.js        — charInfo, charLookupReverse
 data_strokes.js      — charStrokes, strokeExpansionRules, expandStrokes, derived data
 data_radicals.js     — radicalMap
 model/compress.js     — compress, decompress
-model/model.js        — _PROBS_B64, getProb
+model/model.js        — getModelScore
 phonetics.js          — initials, finals, tones, toIPA
 lang.js               — translations, t, setLanguage
 init.js               — DOM references, createCharButton, showCandidates, etc.
@@ -105,7 +105,7 @@ charStrokes ──expandStrokes──► charStrokesExpanded ──► charStrok
                                         │                      │
 user strokes ──► resolveCharsFromStrokes ◄──────────────────────┘
                         │
-              compress + getProb ──► trigram sorting
+              getModelScore ──► trigram sorting
                         │
               showCandidates / initStrokeIME
 ```

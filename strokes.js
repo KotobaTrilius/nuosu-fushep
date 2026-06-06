@@ -4,7 +4,7 @@
  * @param {function(): string} getPrevChar
  * @returns {[string, bool][]}
  */
-function resolveCharsFromStrokes(strokes, getPrevChar) {
+function resolveCharsFromStrokes(strokes, getPrevChar, getPrevPrevChar) {
     const countObj = arrToCountObj(strokes);
 
     const sets = Object.entries(countObj)
@@ -27,6 +27,7 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
     let ret = [];
 
     const prevChar = getPrevChar();
+    const prevPrevChar = getPrevPrevChar ? getPrevPrevChar() : undefined;
 
     for (const candidate of candidates) {
         const expansions = charStrokesExpanded[candidate];
@@ -52,10 +53,9 @@ function resolveCharsFromStrokes(strokes, getPrevChar) {
         if (match) ret.push([candidate, minEditDistance]);
     }
 
-    if (prevChar !== undefined && compress(prevChar) !== undefined && ret.length > 0) {
+    if (typeof getModelScore === 'function' && prevChar !== undefined && ret.length > 0) {
         const withProbs = ret.map(elem => {
-            const compressed = compress(elem[0]);
-            const prob = compressed !== undefined ? getProb(prevChar, elem[0]) : 0;
+            const prob = getModelScore(elem[0], prevChar, prevPrevChar);
             return { elem, prob };
         });
 

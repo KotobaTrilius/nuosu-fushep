@@ -118,6 +118,7 @@
                     <span class="mode-switch-label" data-i18n="switch_view">检视</span>
                 </div>
                 <div id="info-display" data-i18n="info_default">悬停在字符上查看详细信息</div>
+                <span class="model-loading hidden" id="model-loading">语言模型加载中…</span>
                 <span class="status-group" style="margin-left:auto;display:inline-flex;gap:var(--space-intimate)">
                     <button class="btn btn-subtle" data-i18n="dict_btn" id="dict-btn">部首检字</button>
                     <button class="btn btn-subtle" id="kbd-toggle">⌨</button>
@@ -129,13 +130,28 @@
     <script src="data_chars.js"></script>
     <script src="data_strokes.js"></script>
     <script src="data_radicals.js"></script>
-    <script src="model/compress.js"></script>
-    <script src="model/model.js"></script>
     <script src="phonetics.js"></script>
     <script src="lang.js"></script>
     <script src="init.js"></script>
     <script src="radicals.js"></script>
     <script src="strokes.js"></script>
     <script src="pinyin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const indicator = document.getElementById('model-loading');
+            indicator.classList.remove('hidden');
+            const scripts = ['model/compress.js', 'model/model.js'];
+            function loadNext(i) {
+                if (i >= scripts.length) { indicator.classList.add('hidden'); return; }
+                const s = document.createElement('script');
+                s.src = scripts[i];
+                s.async = false;
+                s.onload = () => loadNext(i + 1);
+                s.onerror = () => loadNext(i + 1);
+                document.body.appendChild(s);
+            }
+            loadNext(0);
+        });
+    </script>
 </body>
 </html>
