@@ -118,7 +118,6 @@
                     <span class="mode-switch-label" data-i18n="switch_view">检视</span>
                 </div>
                 <div id="info-display" data-i18n="info_default">悬停在字符上查看详细信息</div>
-                <span class="model-loading hidden" id="model-loading">语言模型加载中…</span>
                 <span class="status-group" style="margin-left:auto;display:inline-flex;gap:var(--space-intimate)">
                     <button class="btn btn-subtle" data-i18n="dict_btn" id="dict-btn">部首检字</button>
                     <button class="btn btn-subtle" id="kbd-toggle">⌨</button>
@@ -138,11 +137,12 @@
     <script src="pinyin.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const indicator = document.getElementById('model-loading');
-            indicator.classList.remove('hidden');
+            const placeholder = document.querySelector('.candidate-placeholder');
+            const origText = placeholder.textContent;
+            placeholder.textContent = '语言模型加载中…';
             const scripts = ['model/compress.js', 'model/model.js'];
             function loadNext(i) {
-                if (i >= scripts.length) { indicator.classList.add('hidden'); return; }
+                if (i >= scripts.length) { placeholder.textContent = origText; return; }
                 const s = document.createElement('script');
                 s.src = scripts[i];
                 s.async = false;
