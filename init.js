@@ -476,6 +476,8 @@ function clearCandidates() {
         if (focused && candidateScroll.contains(focused)) focused.blur();
         candidateScroll.querySelectorAll('.char-btn').forEach(el => el.remove());
         candidateScroll.classList.remove('expanded');
+        const editorArea = candidateScroll.closest('.editor-area');
+        if (editorArea) editorArea.classList.remove('candidates-expanded');
         const ph = candidateScroll.querySelector('.candidate-placeholder');
         if (ph) ph.classList.remove('hidden');
     }
