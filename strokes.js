@@ -53,6 +53,8 @@ function resolveCharsFromStrokes(strokes, getPrevChar, getPrevPrevChar) {
         if (match) ret.push([candidate, minEditDistance]);
     }
 
+    ret.sort((a, b) => a[1] - b[1]);
+
     if (typeof getModelScore === 'function' && prevChar !== undefined && ret.length > 0) {
         const withProbs = ret.map(elem => {
             const prob = getModelScore(elem[0], prevChar, prevPrevChar);
@@ -65,6 +67,8 @@ function resolveCharsFromStrokes(strokes, getPrevChar, getPrevPrevChar) {
         });
 
         ret = withProbs.map(item => item.elem).map(([char, ed]) => [char, ed === 0]);
+    } else if (ret.length > 0) {
+        ret = ret.map(([char, ed]) => [char, ed === 0]);
     }
 
     return ret;
