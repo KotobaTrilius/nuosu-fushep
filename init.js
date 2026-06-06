@@ -487,19 +487,25 @@ function clearCandidates() {
 
 function showCandidates(chars) {
     if (!candidateScroll) return;
+    pendingBatch = null;
     var focused = document.activeElement;
     if (focused && candidateScroll.contains(focused)) focused.blur();
     candidateScroll.querySelectorAll('.char-btn').forEach(el => el.remove());
     candidateScroll.classList.remove('expanded');
     const ph = candidateScroll.querySelector('.candidate-placeholder');
+    if (chars.length === 0) {
+        if (ph) ph.classList.remove('hidden');
+        if (candidateToggle) {
+            candidateToggle.style.display = 'none';
+            if (candidateBar) candidateBar.classList.add('toggle-hidden');
+        }
+        return;
+    }
     if (ph) ph.classList.add('hidden');
-    if (chars.length === 0) return;
 
     if (isMobile() && chars.length > 50) {
         pendingBatch = { chars: chars.slice(50) };
         chars = chars.slice(0, 50);
-    } else {
-        pendingBatch = null;
     }
 
     const fragment = document.createDocumentFragment();
